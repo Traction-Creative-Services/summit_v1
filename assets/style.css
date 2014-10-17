@@ -1,0 +1,8 @@
+.project {
+	float:left; 
+	width:33%;
+	border:1px dotted #333;
+	margin:0 1em;
+	padding:10px;
+	border-radius:5px;
+}
