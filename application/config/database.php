@@ -48,10 +48,10 @@
 $active_group = 'default';
 $active_record = TRUE;
 
-$db['default']['hostname'] = 'localhost';
-$db['default']['username'] = 'summit';
-$db['default']['password'] = '75b23cyf';
-$db['default']['database'] = 'summit';
+$db['default']['hostname'] = 'mysql.traction.media';
+$db['default']['username'] = 't_summit';
+$db['default']['password'] = 'GWQs9Hv1@';
+$db['default']['database'] = 't_summit';
 $db['default']['dbdriver'] = 'mysql';
 $db['default']['dbprefix'] = '';
 $db['default']['pconnect'] = TRUE;
