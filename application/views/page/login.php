@@ -13,7 +13,7 @@
 
       <div class="inner cover">
         <h1 class="cover-heading">Login to success</h1>
-        <form method="post" action="index.php/welcome/login">
+        <form method="post" action="<?php echo base_url('index.php/welcome/login'); ?>">
           <div class="input-group input-group-lg">
             <span class="input-group-addon">Username</span>
             <input type="text" class="form-control" name="uname">

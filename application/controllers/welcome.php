@@ -1,6 +1,6 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-class Welcome extends CI_Controller {
+class Welcome extends MY_Controller {
 
 	public function index()
 	{
@@ -15,27 +15,15 @@ class Welcome extends CI_Controller {
 		if($success) {
 			$type = $this->user->type;
 			switch($type) {
-				case 1:
+				case $this->USER_CLIENT:
 					redirect('/client/projects');
-				case 2:
+				case $this->USER_AGENT:
 					redirect('/agent/projects');
 			}
 		} else {
 			redirect('/welcome/','refresh');	
 		}
 		die("error ".$type);
-	}
-
-	public function _loadView($page,$data)
-	{
-		if(!isset($data['title'])) {
-			$data['title'] = 'Project Management';
-		}
-		$data['page'] = $page;
-
-		$this->load->view('component/header',$data);
-		$this->load->view('page/'.$page,$data);
-		$this->load->view('component/footer',$data);
 	}
 }
 

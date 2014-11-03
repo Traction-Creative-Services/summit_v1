@@ -1,3 +1,7 @@
+.projectDashboard {
+	padding-top:70px;
+}
+
 .project {
 	float:left; 
 	width:33%;
@@ -5,4 +9,100 @@
 	margin:0 1em;
 	padding:10px;
 	border-radius:5px;
+}
+
+.overview {
+	position:fixed;
+	right:100px;
+	width:250px;
+	background:#CCC;
+	padding:10px;
+	border-radius:10px;
+}
+
+/* TASK STYLING */
+
+.task {
+	float:left;
+	width:90%;
+	background:#eee;
+	border-radius:10px;
+	position:relative;
+	margin:10px 0;
+}
+
+.task p {
+	padding:2px 10px;
+}
+
+.task .lead {
+	width:100%;
+	background:#333;
+	color:#eee;
+	border-radius:10px 10px 0 0;
+	white-space:nowrap;
+	overflow:hidden;
+}
+
+.task .due-on {
+	position:absolute;
+	top:0;
+	right:0;
+	color:#EEE;
+	padding:7px;
+	border-radius:0 10px 0 0;
+	height:2.35em;
+}
+
+.late {
+	background:#933;
+}
+
+.ontime {
+	background:#393;
+}
+
+.now {
+	background:#A93;
+}
+
+.task .more-btn {
+	position:absolute;
+	bottom:0;
+	right:0;
+	padding:7px;
+	border:1px solid #CCC;
+	padding: 0 5px 5px 5px;
+	text-align:center;
+	background:#222;
+	color:#EEE;
+	border-radius:0 0 10px 0;
+	cursor:pointer;
+}
+
+.task header {
+	cursor:move;
+}
+
+.task footer {
+	border-top:1px dashed #CCC;
+}
+
+.task footer ul {
+	list-style:none;
+	padding:0;
+	margin:0;
+	padding:0 5px;
+}
+
+.task footer ul li {
+	float:left;
+	margin:0;
+	padding:5px;
+}
+
+.task footer ul li img {
+	height:25px;
+	width:25px;
+	border:none;
 }

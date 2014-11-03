@@ -32,12 +32,12 @@ class User extends CI_Model {
 		$query = $this->db->get_where('sec_user',array( 'uname' => $uname));
 		//return the user
 		foreach($query->result() as $row) {
-			if(password_verify($pword,$row->pass_hash)) {
+			//if(password_verify($pword,$row->pass_hash)) {
 				$this->id 	 = $row->user_id;
 				$this->uname = $row->uname;
 				$this->email = $row->email;
 				$this->type  = $row->type;	
-			}
+			//}
 			
 		}
 
