@@ -86,6 +86,8 @@
 
 .task footer {
 	border-top:1px dashed #CCC;
+	height:27px;
+	max-height:27px;
 }
 
 .task footer ul {
@@ -99,6 +101,7 @@
 	float:left;
 	margin:0;
 	padding:5px;
+	font-size:0.8em;
 }
 
 .task footer ul li img {

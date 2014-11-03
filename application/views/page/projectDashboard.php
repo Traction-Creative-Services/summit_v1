@@ -12,9 +12,9 @@
 		<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 			<ul class="nav navbar-nav navbar-right">
 				<li class="dropdown">
-					<a class="dropdown-toggle" data-toggle="dropdown" href="#">Agents <span class="caret"></span></a>
+					<a class="dropdown-toggle" data-toggle="dropdown" href="#">Team <span class="caret"></span></a>
 					<ul class="dropdown-menu">
-						<input type="search" id="agent-search" placeholder="Add Agent..." class="form-control">
+						<input type="search" id="agent-search" placeholder="Add Team Member..." class="form-control">
 						<div id="agent-heads-container">
 							<?php //echo $project->agentHeads; ?>
 						</div>

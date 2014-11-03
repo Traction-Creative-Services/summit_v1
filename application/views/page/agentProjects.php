@@ -1,5 +1,5 @@
 <div class="container">
-	<h1>Welcome Agent <?php echo $user['uname']; ?></h1>
+	<h1>Welcome <?php echo $user['uname']; ?></h1>
 	<div class="cust-row">
 	<?php foreach($projects as $project) { ?>
 		<a href="<?php echo site_url('/agent/projectDetail/'.$project->project_id); ?>">
