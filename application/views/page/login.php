@@ -12,7 +12,7 @@
       </div>
 
       <div class="inner cover">
-        <h1 class="cover-heading">Login to success</h1>
+        <h1 class="cover-heading">Login</h1>
         <form method="post" action="<?php echo base_url('index.php/welcome/login'); ?>">
           <div class="input-group input-group-lg">
             <span class="input-group-addon">Username</span>
