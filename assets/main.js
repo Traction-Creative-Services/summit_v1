@@ -119,7 +119,7 @@ var taskModel = {
                     HTML +=           '<ul class="members">';
                                                 $.each(data.members, function(member) {
                                                         HTML += '<li class="member-head" id="' + member.user_id + '">';
-                                                        HTML +=        '<img alt="' + member.initials + '" src="' + member.thumb + '">';
+                                                        HTML +=        '<img alt="' + member.initials + '" src="http://traction.media/summit/assets/uploads/' + member.thumb + '">';
                                                         HTML += '</li>';
                                                 });
                     HTML +=            '</ul>';
@@ -127,6 +127,7 @@ var taskModel = {
                     HTML +=     '</footer>';
                     
                     $('article#' + id).html(HTML);
+                    alertModel.doAlert('Task Saved','success',3);
                }
           })
      }
