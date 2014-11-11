@@ -57,7 +57,10 @@ class ajaxCommands extends MY_Controller {
 		else if( $now > $dueOn ) {
 			$task->dueState = 'late';
 		}
-		return json_encode((array) $task);
+		
+		$taskArray = (array) $task;
+		header('Content-Type: application/json');
+		echo json_encode( $taskArray );
 	}
 
 	
