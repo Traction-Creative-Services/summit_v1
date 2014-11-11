@@ -65,7 +65,7 @@ var constantModel = {
      
      setCurrentState: function() {
           constantModel.projectId = $(".project-wrapper").attr('id');
-          $.each('article.task',function() {
+          $('article.task').each(function() {
                var members = [];
                var id = $(this).attr('id');
                var title = $('article#'+id+'>header>p.lead').html();
