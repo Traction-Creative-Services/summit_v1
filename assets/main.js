@@ -96,10 +96,6 @@ var constantModel = {
                success: function(data) {
                     $.each(data.tasks,function(task) {
                          taskModel.updateTask(task.id, false)
-                         if (task.statusChange) {
-                              document.getElementById(task.newStatus+'-column').appendChild(document.getElementById(task.id));
-                              
-                         }
                     })
                }
           })
