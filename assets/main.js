@@ -71,7 +71,7 @@ var constantModel = {
                var title = $('article#'+id+'>header>p.lead').html();
                var dueOn = $('article#'+id+'>header>span.due-on').html();
                var description = $('article#'+id+'>p.task-description').html();
-               $.each('article#'+id+'>ul>li.member-head',function() {
+               $('article#'+id+'>ul>li.member-head').each(function() {
                     var memberId = $(this).attr('id');
                     members.push(memberId);
                })
