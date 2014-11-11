@@ -61,8 +61,16 @@ var taskModel = {
                },
                success: function(data) {
                     console.log(data);
-                    $('#myModalLabel').html(title);
-                    
+                    $('#taskModalLabel').html(data.name);
+                    $('#taskModalhiddenIdField').val(data.task_id);
+                    $('#taskModaldescriptionField').val(data.description);
+                    $('#taskModaldueDateField').val(data.due_on);
+                    $.each(data.members, function() {
+                         var HTML = '<li>';
+                         HTML += 'Member';
+                         HTML += '</li>';
+                         $('#taskModalmemberList').append(HTML);
+                    })
                     $('#taskModal').modal()
                }
           })
