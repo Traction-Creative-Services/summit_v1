@@ -82,7 +82,7 @@ var constantModel = {
                     dueDate: dueOn,
                     description: description
                }
-               contantModel.taskArray.push(task);
+               constantModel.taskArray.push(task);
           });
      },
      
