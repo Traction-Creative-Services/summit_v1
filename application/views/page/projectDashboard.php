@@ -50,7 +50,7 @@
 							<ul class="members">
 								<?php foreach($task->members as $member) { ?>
 									<li class="member-head" id="<?php echo $member->user_id; ?>">
-										<img alt="<?php echo $member->initials; ?>" src="<?php echo site_url('assets/uploads/'.$member->thumb); ?>">
+										<img alt="<?php echo $member->initials; ?>" src="<?php echo base_url('assets/uploads/'.$member->thumb); ?>">
 									</li>
 								<?php } ?>
 							</ul>
@@ -74,7 +74,7 @@
 							<ul class="members">
 								<?php foreach($task->members as $member) { ?>
 									<li class="member-head" id="<?php echo $member->user_id; ?>">
-										<img alt="<?php echo $member->initials; ?>" src="<?php echo site_url('assets/uploads/'.$member->thumb); ?>">
+										<img alt="<?php echo $member->initials; ?>" src="<?php echo base_url('assets/uploads/'.$member->thumb); ?>">
 									</li>
 								<?php } ?>
 							</ul>
@@ -98,7 +98,7 @@
 							<ul class="members">
 								<?php foreach($task->members as $member) { ?>
 									<li class="member-head" id="<?php echo $member->user_id; ?>">
-										<img alt="<?php echo $member->initials; ?>" src="<?php echo site_url('assets/uploads/'.$member->thumb); ?>">
+										<img alt="<?php echo $member->initials; ?>" src="<?php echo base_url('assets/uploads/'.$member->thumb); ?>">
 									</li>
 								<?php } ?>
 							</ul>
@@ -122,7 +122,7 @@
 							<ul class="members">
 								<?php foreach($task->members as $member) { ?>
 									<li class="member-head" id="<?php echo $member->user_id; ?>">
-										<img alt="<?php echo $member->initials; ?>" src="<?php echo site_url('assets/uploads/'.$member->thumb); ?>">
+										<img alt="<?php echo $member->initials; ?>" src="<?php echo base_url('assets/uploads/'.$member->thumb); ?>">
 									</li>
 								<?php } ?>
 							</ul>
