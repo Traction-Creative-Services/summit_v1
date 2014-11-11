@@ -86,7 +86,7 @@ class ajaxCommands extends MY_Controller {
 		foreach($newTasks as $task) {
 			$isDifferent = false;
 			$checkAgainst = $curTasks[$task->task_id];
-			if($task->title != $checkAgainst['title'])
+			if($task->name != $checkAgainst['title'])
 				$isDifferent = true;
 			if($task->due_on != $checkAgainst['dueDate'])
 				$isDifferent = true;
