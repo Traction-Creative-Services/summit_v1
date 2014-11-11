@@ -5,14 +5,8 @@
 
     <div class="cover-container">
 
-      <div class="masthead clearfix">
-        <div class="inner">
-          <h3 class="masthead-brand">Summit</h3>
-        </div>
-      </div>
-
       <div class="inner cover">
-        <h1 class="cover-heading">Login</h1>
+        <img class="cover-heading" alt="Summit" src="<?php echo base_url('assets/Summit.png'); ?>">
         <form method="post" action="<?php echo base_url('index.php/welcome/login'); ?>">
           <div class="input-group input-group-lg">
             <span class="input-group-addon">Username</span>

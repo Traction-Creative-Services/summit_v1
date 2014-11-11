@@ -36,11 +36,11 @@
 	</div>
 
 	<div class="row">
-		<div class="col-md-3" id="ready-column">
+		<div class="col-md-3" id="ready-column" ondragover="allowDrop(event)" ondrop="drop(event)">
 			<p class="lead">Ready</p>
 			<?php foreach($project->tasks as $task) {
 				if ( $task->status == 0 ) { ?>
-					<article class="task" id="<?php echo $task->task_id; ?>">
+					<article class="task" draggable="true" id="<?php echo $task->task_id; ?>">
 						<header>
 							<p class="lead"><?php echo $task->name; ?></p>
 							<span class="due-on <?php echo $task->dueState; ?>"><?php echo $task->due_on; ?></span>
@@ -60,11 +60,11 @@
 				 <?php }
 			}?>
 		</div>
-		<div class="col-md-3" id="doing-column">
+		<div class="col-md-3" id="doing-column" ondragover="allowDrop(event)" ondrop="drop(event)">
 			<p class="lead">Doing</p>
 			<?php foreach($project->tasks as $task) {
 				if ( $task->status == 1 ) { ?>
-					<article class="task" id="<?php echo $task->task_id; ?>">
+					<article class="task" draggable="true" id="<?php echo $task->task_id; ?>">
 						<header>
 							<p class="lead"><?php echo $task->name; ?></p>
 							<span class="due-on <?php echo $task->dueState; ?>"><?php echo $task->due_on; ?></span>
@@ -84,11 +84,11 @@
 				 <?php }
 			} ?>
 		</div>
-		<div class="col-md-3" id="review-column">
+		<div class="col-md-3" id="review-column" ondragover="allowDrop(event)" ondrop="drop(event)">
 			<p class="lead">Review</p>
 			<?php foreach($project->tasks as $task) {
 				if ( $task->status == 2 ) { ?>
-					<article class="task" id="<?php echo $task->task_id; ?>">
+					<article class="task" draggable="true" id="<?php echo $task->task_id; ?>">
 						<header>
 							<p class="lead"><?php echo $task->name; ?></p>
 							<span class="due-on <?php echo $task->dueState; ?>"><?php echo $task->due_on; ?></span>
@@ -108,11 +108,11 @@
 				<?php }
 			}?>
 		</div>
-		<div class="col-md-3" id="complete-column">
+		<div class="col-md-3" id="complete-column" ondragover="allowDrop(event)" ondrop="drop(event)">
 			<p class="lead">Complete</p>
 			<?php foreach($project->tasks as $task) {
 				if ( $task->status == 3 ) { ?>
-					<article class="task" id="<?php echo $task->task_id; ?>">
+					<article class="task" draggable="true" id="<?php echo $task->task_id; ?>">
 						<header>
 							<p class="lead"><?php echo $task->name; ?></p>
 							<span class="due-on <?php echo $task->dueState; ?>"><?php echo $task->due_on; ?></span>

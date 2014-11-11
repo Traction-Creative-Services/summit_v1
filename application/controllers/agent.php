@@ -20,7 +20,7 @@ class Agent extends MY_Controller {
 		$data['project'] = $this->project;
 		$this->_loadView('projectDashboard',$data);
 	}
-
+	
 
 	//****************** HELPER FUNCTIONS ******************//
 	public function _loadProjects() 

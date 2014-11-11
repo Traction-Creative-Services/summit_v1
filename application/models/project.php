@@ -1,14 +1,14 @@
 <?php
 class Project extends CI_Model {
 	
-	var	$id 		= '';
+	var $id 		= '';
 	var $name 		= '';
 	var $start 		= '';
 	var $end		= '';
-	var $agents 	= array();
-	var $client 	= array();
-	var $tasks      = array();
-	var $meetings 	= array();
+	var $agents 		= array();
+	var $client 		= array();
+	var $tasks      	= array();
+	var $meetings 		= array();
 	var $notes		= array();
 
 	
@@ -26,6 +26,8 @@ class Project extends CI_Model {
 		$this->_loadAgents();
 		//$this->_loadClient();
 	}
+	
+	//****************** HELPER FUNCTIONS ******************//
 
 	private function _LoadAttributes() {
 		$query = $this->db->get_where( 'project', array( 'project_id' => $this->id ) );
