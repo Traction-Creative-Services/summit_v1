@@ -11,10 +11,7 @@ $(document).on( 'dragover', 'div.col-md-3', function(e) { $(this).addClass('drop
 $(document).on( 'dragleave', 'div.col-md-3', function(e) { $(this).removeClass('dropTarget'); })
 $(document).on( 'drop', 'div.col-md-3', function(e) { $(this).removeClass('dropTarget'); })
 $(document).on( 'dragstart', 'article', function(e) { drag(e) })
-
-$(document).ready(function() {
-     
-})
+$(document).on( 'click', '.more-btn', function(e) { taskModel.loadModal(e); })
 
 function allowDrop(ev) {
      ev.preventDefault();
@@ -50,6 +47,16 @@ function updateTaskState(target) {
                alertModel.doAlert('Updated','success',3);
           }
      });
+}
+
+var taskModel = {
+     loadModal: function(e) {
+          var id = e.target.id;
+          var arr = id.split('-');
+          var taskId = arr[2];
+          
+          $('#taskModal').modal()
+     }
 }
 
 var alertModel = {
