@@ -71,6 +71,19 @@ class ajaxCommands extends MY_Controller {
 		$this->db->where('task_id',$id);
 		$this->db->update('task',array('description' => $description, 'due_on' => $dueon ));
 	}
+	
+	public function checkForUpdate() {
+		$tasks = $this->input->get('tasks');
+		$project = $this->input->get('project');
+		$this->load->model('Project','project');
+		$this->project->init($project);
+		var_dump($tasks);
+		var_dump($this->project->tasks);
+		die();
+		foreach($this->project->tasks as $task) {
+			
+		}
+	}
 
 	
 	

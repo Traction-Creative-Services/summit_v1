@@ -14,6 +14,13 @@ $(document).on( 'dragstart', 'article', function(e) { drag(e) })
 $(document).on( 'click', '.more-btn', function(e) { taskModel.loadModal(e); })
 $(document).on( 'click', '#saveModalTask', function(e) {taskModel.saveModal()})
 
+$(document).ready(function(e) {
+     constantModel.setCurrentState();
+     setInterval(function() {
+          constantModel.checkForUpdate();
+     }, 5000);
+})
+
 function allowDrop(ev) {
      ev.preventDefault();
 }
@@ -48,6 +55,55 @@ function updateTaskState(target) {
                alertModel.doAlert('Updated','success',3);
           }
      });
+}
+
+var constantModel = {
+     taskArray: [],
+     meetingArray: [],
+     noteArray: [],
+     projectId: '',
+     
+     setCurrentState: function() {
+          constantModel.projectId = $(".project-wrapper").attr('id');
+          $.each('article.task',function() {
+               var members = [];
+               var id = $(this).attr('id');
+               var title = $('article#'+id+'>header>p.lead').html();
+               var dueOn = $('article#'+id+'>header>span.due-on').html();
+               var description = $('article#'+id+'>p.task-description').html();
+               $.each('article#'+id+'>ul>li.member-head',function() {
+                    var memberId = $(this).attr('id');
+                    members.push(memberId);
+               })
+               var task = {
+                    id: id,
+                    members: members,
+                    title: title,
+                    dueDate: dueOn,
+                    description: description
+               }
+               contantModel.taskArray.push(task);
+          });
+     },
+     
+     checkForUpdate: function() {
+          $.ajax({
+               url: 'http://traction.media/summit/index.php/ajaxCommands/checkForUpdate',
+               data: {
+                    project: constantModel.projectId,
+                    tasks: constantModel.taskArray
+               },
+               success: function(data) {
+                    $.each(data.tasks,function(task) {
+                         taskModel.updateTask(task.id, false)
+                         if (task.statusChange) {
+                              document.getElementById(task.newStatus+'-column').appendChild(document.getElementById(task.id));
+                              
+                         }
+                    })
+               }
+          })
+     }
 }
 
 var taskModel = {
@@ -98,12 +154,12 @@ var taskModel = {
                },
                success: function(data) {
                     $('#taskModal').modal('hide');
-                    taskModel.updateTask(taskId);
+                    taskModel.updateTask(taskId, true);
                }
           })
      },
      
-     updateTask: function(id) {
+     updateTask: function(id,alert) {
           $.ajax({
                url: 'http://traction.media/summit/index.php/ajaxCommands/getTask',
                data: {
@@ -127,7 +183,10 @@ var taskModel = {
                     HTML +=     '</footer>';
                     
                     $('article#' + id).html(HTML);
-                    alertModel.doAlert('Task Saved','success',3);
+                    if (alert) {
+                         alertModel.doAlert('Task Saved','success',3);
+                    }
+                    
                }
           })
      }
