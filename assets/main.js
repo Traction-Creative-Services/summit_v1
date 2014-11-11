@@ -11,10 +11,8 @@ $(document).on( 'dragover', 'div.col-md-3', function(e) { $(this).addClass('drop
 $(document).on( 'dragleave', 'div.col-md-3', function(e) { $(this).removeClass('dropTarget'); })
 $(document).on( 'drop', 'div.col-md-3', function(e) { $(this).removeClass('dropTarget'); })
 $(document).on( 'dragstart', 'article', function(e) { drag(e) })
-
-$(document).ready(function() {
-     
-})
+$(document).on( 'click', '.more-btn', function(e) { taskModel.loadModal(e); })
+$(document).on( 'click', '#saveModalTask', function(e) {taskModel.saveModal()})
 
 function allowDrop(ev) {
      ev.preventDefault();
@@ -50,6 +48,59 @@ function updateTaskState(target) {
                alertModel.doAlert('Updated','success',3);
           }
      });
+}
+
+var taskModel = {
+     loadModal: function(e) {
+          var id = e.target.id;
+          var arr = id.split('-');
+          var taskId = arr[2];
+          $.ajax({
+               url: 'http://traction.media/summit/index.php/ajaxCommands/getTask',
+               data: {
+                    task: taskId,
+               },
+               success: function(data) {
+                    taskModel.clearModal();
+                    $('#taskModalLabel').html(data.name);
+                    $('#taskModalhiddenIdField').val(data.task_id);
+                    $('#taskModaldescriptionField').val(data.description);
+                    $('#taskModaldueDateField').val(data.due_on);
+                    $.each(data.members, function() {
+                         var HTML = '<li>';
+                         HTML += 'Member';
+                         HTML += '</li>';
+                         $('#taskModalmemberList').append(HTML);
+                    })
+                    $('#taskModal').modal()
+               }
+          })
+     },
+     
+     clearModal: function() {
+          $('#taskModalLabel').html('New Task');
+          $('#taskModalhiddenIdField').val('');
+          $('#taskModaldescriptionField').val('');
+          $('#taskModaldueDateField').val('');
+          $('#taskModalmemberList').html('');
+     },
+     
+     saveModal: function() {
+          var taskId          = $('#taskModalhiddenIdField').val();
+          var description     = $('#taskModaldescriptionField').val();
+          var duedate         = $('#taskModaldueDateField').val();
+          $.ajax({
+               url: 'http://traction.media/summit/index.php/ajaxCommands/updateTask',
+               data: {
+                    task: taskId,
+                    description: description,
+                    due: duedate
+               },
+               success: function(data) {
+                    $('#taskModal').modal('hide');
+               }
+          })
+     }
 }
 
 var alertModel = {
