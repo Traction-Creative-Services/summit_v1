@@ -48,7 +48,7 @@ class Project extends CI_Model {
 			$members = $this->db->get_where( 'task_has_agent', array( 'task_id' => $tId ) );
 			$task->members = array();
 			foreach ( $members->result() as $member ) {
-				$agent = $this->db->get_where( 'sec_user', array( 'user_id' => $member->agent_id ) )->row();
+				$agent = $this->db->get_where( 'sec_user', array( 'user_id' => $member->user_id ) )->row();
 				$task->members[] = $agent;
 			}
 
