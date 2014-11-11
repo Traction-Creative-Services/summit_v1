@@ -12,6 +12,7 @@ $(document).on( 'dragleave', 'div.col-md-3', function(e) { $(this).removeClass('
 $(document).on( 'drop', 'div.col-md-3', function(e) { $(this).removeClass('dropTarget'); })
 $(document).on( 'dragstart', 'article', function(e) { drag(e) })
 $(document).on( 'click', '.more-btn', function(e) { taskModel.loadModal(e); })
+$(document).on( 'click', '#saveModalTask', function(e) {taskModel.saveModal()})
 
 function allowDrop(ev) {
      ev.preventDefault();
@@ -60,7 +61,7 @@ var taskModel = {
                     task: taskId,
                },
                success: function(data) {
-                    console.log(data);
+                    taskModel.clearModal();
                     $('#taskModalLabel').html(data.name);
                     $('#taskModalhiddenIdField').val(data.task_id);
                     $('#taskModaldescriptionField').val(data.description);
@@ -74,8 +75,31 @@ var taskModel = {
                     $('#taskModal').modal()
                }
           })
-          
-          
+     },
+     
+     clearModal: function() {
+          $('#taskModalLabel').html('New Task');
+          $('#taskModalhiddenIdField').val('');
+          $('#taskModaldescriptionField').val('');
+          $('#taskModaldueDateField').val('');
+          $('#taskModalmemberList').html('');
+     },
+     
+     saveModal: function() {
+          var taskId          = $('#taskModalhiddenIdField').val();
+          var description     = $('#taskModaldescriptionField').val();
+          var duedate         = $('#taskModaldueDateField').val();
+          $.ajax({
+               url: 'http://traction.media/summit/index.php/ajaxCommands/updateTask',
+               data: {
+                    task: taskId,
+                    description: description,
+                    due: duedate
+               },
+               success: function(data) {
+                    $('#taskModal').modal('hide');
+               }
+          })
      }
 }
 

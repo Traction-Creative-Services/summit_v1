@@ -62,6 +62,15 @@ class ajaxCommands extends MY_Controller {
 		header('Content-Type: application/json');
 		echo json_encode( $taskArray );
 	}
+	
+	public function updateTask() {
+		$id = $this->input->get('task');
+		$description = $this->input->get('description');
+		$dueon = $this->input->get('due');
+		
+		$this->db->where('task_id',$id);
+		$this->db->update('task',array('description' => $description, 'due_on' => $dueon ));
+	}
 
 	
 	

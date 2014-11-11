@@ -149,12 +149,11 @@
 	<textarea id="taskModaldescriptionField"></textarea>
 	<input type="date" value="" id="taskModaldueDateField" />
 	<ul id="taskModalmemberList">
-		
 	</ul>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Save changes</button>
+        <button type="button" class="btn btn-primary" id="saveModalTask">Save changes</button>
       </div>
     </div>
   </div>
