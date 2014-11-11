@@ -53,7 +53,7 @@ class Project extends CI_Model {
 			}
 			
 			//get the task lists
-			$lists = $this->db->get_where( 'meeting_has_list', array( 'meeting_id' => $mId ) );
+			$lists = $this->db->get_where( 'meeting_has_list', array( 'meeting_id' => $tId ) );
 			$task->lists = array();
 			foreach ( $lists->result() as $list ) {
 				$list_object = $this->db->get_where( 'list', array( 'list_id' => $list->list_id ) )->row();
