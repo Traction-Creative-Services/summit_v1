@@ -1,4 +1,5 @@
-<?php
+<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+
 class Project extends CI_Model {
 	
 	var $id 		= '';
@@ -28,7 +29,7 @@ class Project extends CI_Model {
 	}
 	
 	//****************** HELPER FUNCTIONS ******************//
-
+	
 	private function _LoadAttributes() {
 		$query = $this->db->get_where( 'project', array( 'project_id' => $this->id ) );
 		$project = $query->row();
@@ -47,8 +48,16 @@ class Project extends CI_Model {
 			$members = $this->db->get_where( 'task_has_agent', array( 'task_id' => $tId ) );
 			$task->members = array();
 			foreach ( $members->result() as $member ) {
-				$agent = $this->db->get_where( 'sec_user', array( 'user_id' => $member->agent_id ) )->row();
+				$agent = $this->db->get_where( 'sec_user', array( 'user_id' => $member->user_id ) )->row();
 				$task->members[] = $agent;
+			}
+			
+			//get the task lists
+			$lists = $this->db->get_where( 'meeting_has_list', array( 'meeting_id' => $mId ) );
+			$task->lists = array();
+			foreach ( $lists->result() as $list ) {
+				$list_object = $this->db->get_where( 'list', array( 'list_id' => $list->list_id ) )->row();
+				$task->lists[] = $list_object;
 			}
 
 			//check if it's past due
@@ -73,13 +82,34 @@ class Project extends CI_Model {
 
 	private function _loadMeetings() {
 		$query = $this->db->get_where( 'meeting', array('project_id' => $this->id ) );
-		foreach( $query->result() as $meeting ) { 
+		foreach( $query->result() as $meeting ) {
+			//set the id for the meeting
+			$mId = $meeting->meeting_id;
+			
+			//get the meeting members
+			$members = $this->db->get_where( 'meeting_has_members', array( 'meeting_id' => $mId ) );
+			$meeting->members = array();
+			foreach ( $members->result() as $member ) {
+				$agent = $this->db->get_where( 'sec_user', array( 'user_id' => $member->user_id ) )->row();
+				$meeting->members[] = $agent;
+			}
+			
+			//get the meeting lists
+			$lists = $this->db->get_where( 'meeting_has_list', array( 'meeting_id' => $mId ) );
+			$meeting->lists = array();
+			foreach ( $lists->result() as $list ) {
+				$lObject = $this->db->get_where( 'list', array( 'list_id' => $list->list_id ) )->row();
+				$meeting->lists[] = $lObject;
+			}
+			
+			
+			
 			$this->meetings[] = $meeting;
 		}
 	}
 
 	private function _loadNotes() {
-		$query = $this->db->get_where( 'notes', array( 'project_id' => $this->id ) );
+		$query = $this->db->get_where( 'note', array( 'project_id' => $this->id ) );
 		foreach( $query->result() as $note ) {
 			$this->notes[] = $note;
 		}
