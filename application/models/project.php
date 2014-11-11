@@ -29,7 +29,7 @@ class Project extends CI_Model {
 	}
 	
 	//****************** HELPER FUNCTIONS ******************//
-
+	
 	private function _LoadAttributes() {
 		$query = $this->db->get_where( 'project', array( 'project_id' => $this->id ) );
 		$project = $query->row();
