@@ -94,9 +94,12 @@ var constantModel = {
                     tasks: constantModel.taskArray
                },
                success: function(data) {
-                    $.each(data,function(task) {
-                         taskModel.updateTask(task, false)
-                    })
+                    var num = data.length;
+                    if (num > 0) {
+                         for(var i = 0; i<num; i++) {
+                              taskModel.update(data[i], false);
+                         }
+                    }
                }
           })
      }
