@@ -95,7 +95,7 @@ var constantModel = {
                },
                success: function(data) {
                     $.each(data.tasks,function(task) {
-                         taskModel.updateTask(task.id, false)
+                         taskModel.updateTask(task, false)
                     })
                }
           })
