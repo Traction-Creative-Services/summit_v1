@@ -54,9 +54,20 @@ var taskModel = {
           var id = e.target.id;
           var arr = id.split('-');
           var taskId = arr[2];
-          var title = $('#' + taskId + '>header>p.lead').html();
-          $('#myModalLabel').html(title);
-          $('#taskModal').modal()
+          $.ajax({
+               url: 'http://traction.media/summit/index.php/ajaxCommands/getTask',
+               data: {
+                    task: taskId,
+               },
+               success: function(data) {
+                    console.log(data);
+                    $('#myModalLabel').html(title);
+                    
+                    $('#taskModal').modal()
+               }
+          })
+          
+          
      }
 }
 
