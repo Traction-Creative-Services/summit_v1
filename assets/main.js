@@ -98,6 +98,35 @@ var taskModel = {
                },
                success: function(data) {
                     $('#taskModal').modal('hide');
+                    taskModel.updateTask(taskId);
+               }
+          })
+     },
+     
+     updateTask: function(id) {
+          $.ajax({
+               url: 'http://traction.media/summit/index.php/ajaxCommands/getTask',
+               data: {
+                    task: id
+               },
+               success: function(data) {
+                    var HTML =  '<header>';
+                    HTML +=         '<p class="lead">' + data.name + '</p>';
+                    HTML +=         '<span class="due-on ' + data.dueState + '">' + data.due_on + '</span>';
+                    HTML +=     '</header>';
+                    HTML +=     '<p class="task-description">' + data.description + '</p>';
+                    HTML +=     '<footer>';
+                    HTML +=           '<ul class="members">';
+                                                $.each(data.members, function(member) {
+                                                        HTML += '<li class="member-head" id="' + member.user_id + '">';
+                                                        HTML +=        '<img alt="' + member.initials + '" src="' + member.thumb + '">';
+                                                        HTML += '</li>';
+                                                });
+                    HTML +=            '</ul>';
+                    HTML +=            '<span class="more-btn" id="more-btn-' + data.task_id + '">...</span>';
+                    HTML +=     '</footer>';
+                    
+                    $('article#' + id).html(HTML);
                }
           })
      }
