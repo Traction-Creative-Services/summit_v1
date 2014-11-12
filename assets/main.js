@@ -96,7 +96,7 @@ var constantModel = {
                success: function(data) {
                     var num = 0;
                     console.log(data);
-                    if (data !== []) {
+                    if (data != []) {
                          num = data.length;
                     }
                     if (num > 0) {
