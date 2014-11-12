@@ -11,9 +11,14 @@ $(document).on( 'dragover', 'div.col-md-3', function(e) { $(this).addClass('drop
 $(document).on( 'dragleave', 'div.col-md-3', function(e) { $(this).removeClass('dropTarget'); })
 $(document).on( 'drop', 'div.col-md-3', function(e) { $(this).removeClass('dropTarget'); })
 $(document).on( 'dragstart', 'article', function(e) { drag(e) })
+$(document).on( 'click', '.more-btn', function(e) { taskModel.loadModal(e); })
+$(document).on( 'click', '#saveModalTask', function(e) {taskModel.saveModal()})
 
-$(document).ready(function() {
-     
+$(document).ready(function(e) {
+     constantModel.setCurrentState();
+     setInterval(function() {
+          constantModel.checkForUpdate();
+     }, 5000);
 })
 
 function allowDrop(ev) {
@@ -50,6 +55,140 @@ function updateTaskState(target) {
                alertModel.doAlert('Updated','success',3);
           }
      });
+}
+
+var constantModel = {
+     taskArray: [],
+     meetingArray: [],
+     noteArray: [],
+     projectId: '',
+     
+     setCurrentState: function() {
+          constantModel.projectId = $(".project-wrapper").attr('id');
+          $('article.task').each(function() {
+               var members = [];
+               var id = $(this).attr('id');
+               var title = $('article#'+id+'>header>p.lead').html();
+               var dueOn = $('article#'+id+'>header>span.due-on').html();
+               var description = $('article#'+id+'>p.task-description').html();
+               $('article#'+id+'>ul>li.member-head').each(function() {
+                    var memberId = $(this).attr('id');
+                    members.push(memberId);
+               })
+               var task = {
+                    id: id,
+                    members: members,
+                    title: title,
+                    dueDate: dueOn,
+                    description: description
+               }
+               constantModel.taskArray.push(task);
+          });
+     },
+     
+     checkForUpdate: function() {
+          $.ajax({
+               url: 'http://traction.media/summit/index.php/ajaxCommands/checkForUpdate',
+               data: {
+                    project: constantModel.projectId,
+                    tasks: constantModel.taskArray
+               },
+               success: function(data) {
+                    var num = data.length;
+                    if (num > 0) {
+                         for(var i = 0; i<num; i++) {
+                              taskModel.update(data[i], false);
+                         }
+                    }
+               }
+          })
+     }
+}
+
+var taskModel = {
+     loadModal: function(e) {
+          var id = e.target.id;
+          var arr = id.split('-');
+          var taskId = arr[2];
+          $.ajax({
+               url: 'http://traction.media/summit/index.php/ajaxCommands/getTask',
+               data: {
+                    task: taskId,
+               },
+               success: function(data) {
+                    taskModel.clearModal();
+                    $('#taskModalLabel').html(data.name);
+                    $('#taskModalhiddenIdField').val(data.task_id);
+                    $('#taskModaldescriptionField').val(data.description);
+                    $('#taskModaldueDateField').val(data.due_on);
+                    $.each(data.members, function() {
+                         var HTML = '<li>';
+                         HTML += 'Member';
+                         HTML += '</li>';
+                         $('#taskModalmemberList').append(HTML);
+                    })
+                    $('#taskModal').modal()
+               }
+          })
+     },
+     
+     clearModal: function() {
+          $('#taskModalLabel').html('New Task');
+          $('#taskModalhiddenIdField').val('');
+          $('#taskModaldescriptionField').val('');
+          $('#taskModaldueDateField').val('');
+          $('#taskModalmemberList').html('');
+     },
+     
+     saveModal: function() {
+          var taskId          = $('#taskModalhiddenIdField').val();
+          var description     = $('#taskModaldescriptionField').val();
+          var duedate         = $('#taskModaldueDateField').val();
+          $.ajax({
+               url: 'http://traction.media/summit/index.php/ajaxCommands/updateTask',
+               data: {
+                    task: taskId,
+                    description: description,
+                    due: duedate
+               },
+               success: function(data) {
+                    $('#taskModal').modal('hide');
+                    taskModel.updateTask(taskId, true);
+               }
+          })
+     },
+     
+     updateTask: function(id,alert) {
+          $.ajax({
+               url: 'http://traction.media/summit/index.php/ajaxCommands/getTask',
+               data: {
+                    task: id
+               },
+               success: function(data) {
+                    var HTML =  '<header>';
+                    HTML +=         '<p class="lead">' + data.name + '</p>';
+                    HTML +=         '<span class="due-on ' + data.dueState + '">' + data.due_on + '</span>';
+                    HTML +=     '</header>';
+                    HTML +=     '<p class="task-description">' + data.description + '</p>';
+                    HTML +=     '<footer>';
+                    HTML +=           '<ul class="members">';
+                                                $.each(data.members, function(member) {
+                                                        HTML += '<li class="member-head" id="' + member.user_id + '">';
+                                                        HTML +=        '<img alt="' + member.initials + '" src="http://traction.media/summit/assets/uploads/' + member.thumb + '">';
+                                                        HTML += '</li>';
+                                                });
+                    HTML +=            '</ul>';
+                    HTML +=            '<span class="more-btn" id="more-btn-' + data.task_id + '">...</span>';
+                    HTML +=     '</footer>';
+                    
+                    $('article#' + id).html(HTML);
+                    if (alert) {
+                         alertModel.doAlert('Task Saved','success',3);
+                    }
+                    
+               }
+          })
+     }
 }
 
 var alertModel = {
