@@ -94,7 +94,11 @@ var constantModel = {
                     tasks: constantModel.taskArray
                },
                success: function(data) {
-                    var num = data.length;
+                    var num = 0;
+                    console.log(data);
+                    if (data !== []) {
+                         num = data.length;
+                    }
                     if (num > 0) {
                          for(var i = 0; i<num; i++) {
                               taskModel.updateTask(data[i], false);
