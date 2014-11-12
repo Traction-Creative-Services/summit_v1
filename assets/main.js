@@ -97,7 +97,7 @@ var constantModel = {
                     var num = data.length;
                     if (num > 0) {
                          for(var i = 0; i<num; i++) {
-                              taskModel.update(data[i], false);
+                              taskModel.updateTask(data[i], false);
                          }
                     }
                }
