@@ -101,6 +101,7 @@ var constantModel = {
                          for(var i = 0; i<num; i++) {
                               taskModel.updateTask(arr[i], false);
                          }
+                         constantModel.setCurrentState();
                     }
                }
           })
