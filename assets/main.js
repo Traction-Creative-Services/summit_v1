@@ -95,10 +95,9 @@ var constantModel = {
                },
                success: function(data) {
                     var num = 0;
-                    console.log(data);
-                    if (data != []) {
-                         num = data.length;
-                    }
+                    var obj = JSON.parse(data);
+                    console.log(obj);
+                    num = obj.count;
                     if (num > 0) {
                          for(var i = 0; i<num; i++) {
                               taskModel.updateTask(data[i], false);
