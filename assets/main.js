@@ -96,7 +96,6 @@ var constantModel = {
                success: function(data) {
                     var num = 0;
                     var arr = JSON.parse(data);
-                    console.log(arr);
                     num = arr.length;
                     if (num > 0) {
                          for(var i = 0; i<num; i++) {
