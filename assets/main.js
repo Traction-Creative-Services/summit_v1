@@ -3,7 +3,6 @@ $('.dropdown-menu').click(function(event){
 });
 
 var dragId = '';
-var baseURL = 'http://summit.traction.media/index.php';
 
 $(document).on( 'click', '.dropdown-menu', function(e) { searchModel.preventColapse(e) } );
 $(document).on( 'keyup', '#agent-search', function(e) { searchModel.findAgent(e) } );
@@ -14,18 +13,12 @@ $(document).on( 'drop', 'div.col-md-3', function(e) { $(this).removeClass('dropT
 $(document).on( 'dragstart', 'article', function(e) { drag(e) })
 $(document).on( 'click', '.more-btn', function(e) { taskModel.loadModal(e); })
 $(document).on( 'click', '#saveModalTask', function(e) {taskModel.saveModal()})
-$(document).on( 'click', '.pull-tab', function(e) {meetingModel.togglePanel(e); })
 
 $(document).ready(function(e) {
-     var local = window.location.pathname;
-     var arr = local.split('/');
-     var controler = arr[(arr.length -2)];
-     if(arr[1] == 'beta') {
-          baseURL = 'http://summit.traction.media/beta/index.php';
-     }
-     if(controler == 'projectDetail') {
-          constantModel.launch();
-     }
+     constantModel.setCurrentState();
+     setInterval(function() {
+          constantModel.checkForUpdate();
+     }, 5000);
 })
 
 function allowDrop(ev) {
@@ -53,7 +46,7 @@ function updateTaskState(target) {
      var arr = target.split('-');
      var newState = arr[0];
      $.ajax({
-          url: baseURL + '/ajaxCommands/updateTaskStatus',
+          url: 'http://traction.media/summit/index.php/ajaxCommands/updateTaskStatus',
           data: {
                newState: newState,
                task: dragId
@@ -69,13 +62,6 @@ var constantModel = {
      meetingArray: [],
      noteArray: [],
      projectId: '',
-
-     launch: function() {
-          constantModel.setCurrentState();
-          setInterval(function() {
-               constantModel.checkForUpdate();
-          }, 5000);
-     },
      
      setCurrentState: function() {
           constantModel.projectId = $(".project-wrapper").attr('id');
@@ -102,7 +88,7 @@ var constantModel = {
      
      checkForUpdate: function() {
           $.ajax({
-               url: baseURL + '/ajaxCommands/checkForUpdate',
+               url: 'http://traction.media/summit/index.php/ajaxCommands/checkForUpdate',
                data: {
                     project: constantModel.projectId,
                     tasks: constantModel.taskArray
@@ -128,7 +114,7 @@ var taskModel = {
           var arr = id.split('-');
           var taskId = arr[2];
           $.ajax({
-               url: baseURL + '/ajaxCommands/getTask',
+               url: 'http://traction.media/summit/index.php/ajaxCommands/getTask',
                data: {
                     task: taskId,
                },
@@ -162,7 +148,7 @@ var taskModel = {
           var description     = $('#taskModaldescriptionField').val();
           var duedate         = $('#taskModaldueDateField').val();
           $.ajax({
-               url: baseURL + '/ajaxCommands/updateTask',
+               url: 'http://traction.media/summit/index.php/ajaxCommands/updateTask',
                data: {
                     task: taskId,
                     description: description,
@@ -177,7 +163,7 @@ var taskModel = {
      
      updateTask: function(id,alert) {
           $.ajax({
-               url: baseURL + '/ajaxCommands/getTask',
+               url: 'http://traction.media/summit/index.php/ajaxCommands/getTask',
                data: {
                     task: id
                },
@@ -253,21 +239,4 @@ var searchModel = {
 	findClient: function(e) {
 		e.stopPropagation
 	}
-}
-
-var meetingModel = {
-
-     var togglePanel: function(e) {
-          var el = $( "#" + e.target.id);
-          var target = el.data('target');
-          var state = el.data('state');
-          if(state == 'closed') {
-               $('#' + target).css('right',0);
-               el.data('state','open');
-          }
-          if(state == 'open') {
-               $('#' + target).css('right','-200px');
-               el.data('state','closed');
-          }
-     }
 }
