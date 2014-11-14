@@ -14,6 +14,7 @@ $(document).on( 'drop', 'div.col-md-3', function(e) { $(this).removeClass('dropT
 $(document).on( 'dragstart', 'article', function(e) { drag(e) })
 $(document).on( 'click', '.more-btn', function(e) { taskModel.loadModal(e); })
 $(document).on( 'click', '#saveModalTask', function(e) {taskModel.saveModal()})
+$(document).on( 'click', '.pull-tab', function(e) {meetingModel.togglePanel(e); })
 
 $(document).ready(function(e) {
      var local = window.location.pathname;
@@ -252,4 +253,21 @@ var searchModel = {
 	findClient: function(e) {
 		e.stopPropagation
 	}
+}
+
+var meetingModel = {
+
+     var togglePanel: function(e) {
+          var el = $( "#" + e.target.id);
+          var target = el.data('target');
+          var state = el.data('state');
+          if(state == 'closed') {
+               $('#' + target).css('right',0);
+               el.data('state','open');
+          }
+          if(state == 'open') {
+               $('#' + target).css('right','-200px');
+               el.data('state','closed');
+          }
+     }
 }
