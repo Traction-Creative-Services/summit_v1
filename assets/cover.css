@@ -183,4 +183,5 @@ body {
   top:0;
   left:0;
   transition:top 1s;
+  width:115px;
 }
