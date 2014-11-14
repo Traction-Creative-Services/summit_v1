@@ -164,3 +164,15 @@
     </div>
   </div>
 </div>
+
+<div class="drawer" tabindex="-1" role="dialog">
+	<div class="pull-tab" data-target="meetingDrawer" data-state="closed">
+		<p>M</p>
+	</div>
+	<div class="drawer-inner"  id="meetingDrawer">
+		<p class="lead">Meetings</p>
+		<hr />
+		<ul>
+			<li>Meeting</li>
+		</ul>
+	</div>
