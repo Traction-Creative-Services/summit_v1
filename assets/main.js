@@ -94,11 +94,14 @@ var constantModel = {
                     tasks: constantModel.taskArray
                },
                success: function(data) {
-                    var num = data.length;
+                    var num = 0;
+                    var arr = JSON.parse(data);
+                    num = arr.length;
                     if (num > 0) {
                          for(var i = 0; i<num; i++) {
-                              taskModel.update(data[i], false);
+                              taskModel.updateTask(arr[i], false);
                          }
+                         constantModel.setCurrentState();
                     }
                }
           })
