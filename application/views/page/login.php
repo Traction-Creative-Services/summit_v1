@@ -1,4 +1,10 @@
 <link rel="stylesheet" href="<?php echo base_url('assets/cover.css'); ?>">
+<script>
+  $(document).ready(function() {
+    $("#arrow-one").css('top','-20px');
+    $("#arrow-two").css('top','-40px');
+  });
+</script>
 <div class="site-wrapper">
 
   <div class="site-wrapper-inner">
@@ -6,7 +12,11 @@
     <div class="cover-container">
 
       <div class="inner cover">
-        <img class="cover-heading" alt="Summit" src="<?php echo base_url('assets/Summit.png'); ?>">
+        <div id="logo-container">
+          <img alt="logo" src="<?php echo base_url('assets/summit.png'); ?>" id="arrow-one">
+          <img alt="logo" src="<?php echo base_url('assets/summit.png'); ?>" id="arrow-two">
+          <img alt="logo" src="<?php echo base_url('assets/Google_Logo.png'); ?>" id="base">
+        </div>
         <form method="post" action="<?php echo base_url('index.php/welcome/login'); ?>">
           <div class="input-group input-group-lg">
             <span class="input-group-addon">Username</span>
