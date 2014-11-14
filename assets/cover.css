@@ -165,3 +165,21 @@ body {
 .input-group {
   margin:1em 0;
 }
+
+#logo-container {
+  position:relative;
+}
+
+#base {
+  position:absolute;
+  top:0;
+  left:0;
+}
+
+#arrow-one,
+#arrow-two {
+  position:absolute;
+  top:0;
+  left:0;
+  transition:top 1s;
+}
