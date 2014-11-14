@@ -1,4 +1,4 @@
-<div class="container">
+<div class="container project-wrapper" id="<?php echo $project->id; ?>">
 	<div class="navbar navbar-fixed-top navbar-inverse">
 		<div class="navbar-header">
 			<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
@@ -50,7 +50,7 @@
 							<ul class="members">
 								<?php foreach($task->members as $member) { ?>
 									<li class="member-head" id="<?php echo $member->user_id; ?>">
-										<img alt="<?php echo $member->initials; ?>" src="<?php echo $member->thumb; ?>">
+										<img alt="<?php echo $member->initials; ?>" src="<?php echo base_url('assets/uploads/'.$member->thumb); ?>">
 									</li>
 								<?php } ?>
 							</ul>
@@ -74,7 +74,7 @@
 							<ul class="members">
 								<?php foreach($task->members as $member) { ?>
 									<li class="member-head" id="<?php echo $member->user_id; ?>">
-										<img alt="<?php echo $member->initials; ?>" src="<?php echo $member->thumb; ?>">
+										<img alt="<?php echo $member->initials; ?>" src="<?php echo base_url('assets/uploads/'.$member->thumb); ?>">
 									</li>
 								<?php } ?>
 							</ul>
@@ -98,7 +98,7 @@
 							<ul class="members">
 								<?php foreach($task->members as $member) { ?>
 									<li class="member-head" id="<?php echo $member->user_id; ?>">
-										<img alt="<?php echo $member->initials; ?>" src="<?php echo $member->thumb; ?>">
+										<img alt="<?php echo $member->initials; ?>" src="<?php echo base_url('assets/uploads/'.$member->thumb); ?>">
 									</li>
 								<?php } ?>
 							</ul>
@@ -122,7 +122,7 @@
 							<ul class="members">
 								<?php foreach($task->members as $member) { ?>
 									<li class="member-head" id="<?php echo $member->user_id; ?>">
-										<img alt="<?php echo $member->initials; ?>" src="<?php echo $member->thumb; ?>">
+										<img alt="<?php echo $member->initials; ?>" src="<?php echo base_url('assets/uploads/'.$member->thumb); ?>">
 									</li>
 								<?php } ?>
 							</ul>

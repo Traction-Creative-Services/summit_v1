@@ -71,6 +71,32 @@ class ajaxCommands extends MY_Controller {
 		$this->db->where('task_id',$id);
 		$this->db->update('task',array('description' => $description, 'due_on' => $dueon ));
 	}
+	
+	public function checkForUpdate() {
+		$changed = array();
+		$tasks = $this->input->get('tasks');
+		$project = $this->input->get('project');
+		$this->load->model('Project','project');
+		$this->project->init($project);
+		
+		$newTasks = $this->project->tasks;
+		foreach ($tasks as $task) {
+			$curTasks[$task['id']] = $task;
+		}
+		foreach($newTasks as $task) {
+			$isDifferent = false;
+			$checkAgainst = $curTasks[$task->task_id];
+			if($task->name != $checkAgainst['title'])
+				$isDifferent = true;
+			if($task->due_on != $checkAgainst['dueDate'])
+				$isDifferent = true;
+			if($task->description != $checkAgainst['description'])
+				$isDifferent = true;
+			if($isDifferent)
+				$changed[] = $task->task_id;
+		}
+		echo json_encode($changed);
+	}
 
 	
 	

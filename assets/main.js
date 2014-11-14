@@ -14,6 +14,13 @@ $(document).on( 'dragstart', 'article', function(e) { drag(e) })
 $(document).on( 'click', '.more-btn', function(e) { taskModel.loadModal(e); })
 $(document).on( 'click', '#saveModalTask', function(e) {taskModel.saveModal()})
 
+$(document).ready(function(e) {
+     constantModel.setCurrentState();
+     setInterval(function() {
+          constantModel.checkForUpdate();
+     }, 5000);
+})
+
 function allowDrop(ev) {
      ev.preventDefault();
 }
@@ -48,6 +55,57 @@ function updateTaskState(target) {
                alertModel.doAlert('Updated','success',3);
           }
      });
+}
+
+var constantModel = {
+     taskArray: [],
+     meetingArray: [],
+     noteArray: [],
+     projectId: '',
+     
+     setCurrentState: function() {
+          constantModel.projectId = $(".project-wrapper").attr('id');
+          $('article.task').each(function() {
+               var members = [];
+               var id = $(this).attr('id');
+               var title = $('article#'+id+'>header>p.lead').html();
+               var dueOn = $('article#'+id+'>header>span.due-on').html();
+               var description = $('article#'+id+'>p.task-description').html();
+               $('article#'+id+'>ul>li.member-head').each(function() {
+                    var memberId = $(this).attr('id');
+                    members.push(memberId);
+               })
+               var task = {
+                    id: id,
+                    members: members,
+                    title: title,
+                    dueDate: dueOn,
+                    description: description
+               }
+               constantModel.taskArray.push(task);
+          });
+     },
+     
+     checkForUpdate: function() {
+          $.ajax({
+               url: 'http://traction.media/summit/index.php/ajaxCommands/checkForUpdate',
+               data: {
+                    project: constantModel.projectId,
+                    tasks: constantModel.taskArray
+               },
+               success: function(data) {
+                    var num = 0;
+                    var arr = JSON.parse(data);
+                    num = arr.length;
+                    if (num > 0) {
+                         for(var i = 0; i<num; i++) {
+                              taskModel.updateTask(arr[i], false);
+                         }
+                         constantModel.setCurrentState();
+                    }
+               }
+          })
+     }
 }
 
 var taskModel = {
@@ -98,12 +156,12 @@ var taskModel = {
                },
                success: function(data) {
                     $('#taskModal').modal('hide');
-                    taskModel.updateTask(taskId);
+                    taskModel.updateTask(taskId, true);
                }
           })
      },
      
-     updateTask: function(id) {
+     updateTask: function(id,alert) {
           $.ajax({
                url: 'http://traction.media/summit/index.php/ajaxCommands/getTask',
                data: {
@@ -119,7 +177,7 @@ var taskModel = {
                     HTML +=           '<ul class="members">';
                                                 $.each(data.members, function(member) {
                                                         HTML += '<li class="member-head" id="' + member.user_id + '">';
-                                                        HTML +=        '<img alt="' + member.initials + '" src="' + member.thumb + '">';
+                                                        HTML +=        '<img alt="' + member.initials + '" src="http://traction.media/summit/assets/uploads/' + member.thumb + '">';
                                                         HTML += '</li>';
                                                 });
                     HTML +=            '</ul>';
@@ -127,6 +185,10 @@ var taskModel = {
                     HTML +=     '</footer>';
                     
                     $('article#' + id).html(HTML);
+                    if (alert) {
+                         alertModel.doAlert('Task Saved','success',3);
+                    }
+                    
                }
           })
      }
