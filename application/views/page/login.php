@@ -12,10 +12,10 @@
     <div class="cover-container">
 
       <div class="inner cover">
-        <div class="cover-heading" id="logo-container">
+        <div id="logo-container">
           <img alt="logo" src="<?php echo base_url('assets/summit.png'); ?>" id="arrow-one">
           <img alt="logo" src="<?php echo base_url('assets/summit.png'); ?>" id="arrow-two">
-          <img alt="logo" src="<?php echo base_url('assets/Traction_logo.png'); ?>" id="base">
+          <img alt="logo" src="<?php echo base_url('assets/Google_Logo.png'); ?>" id="base">
         </div>
         <form method="post" action="<?php echo base_url('index.php/welcome/login'); ?>">
           <div class="input-group input-group-lg">
