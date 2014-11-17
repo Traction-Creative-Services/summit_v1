@@ -165,11 +165,11 @@
   </div>
 </div>
 
-<div class="drawer" tabindex="-1" role="dialog">
-	<div class="pull-tab" data-target="meetingDrawer" data-state="closed">
-		<p>M</p>
+<div class="drawer" tabindex="-1" role="dialog"  id="meetingDrawer">
+	<div id="meetingDrawerTab" class="pull-tab" data-target="meetingDrawer" data-state="closed">
+		M
 	</div>
-	<div class="drawer-inner"  id="meetingDrawer">
+	<div class="drawer-inner">
 		<p class="lead">Meetings</p>
 		<hr />
 		<ul>

@@ -102,6 +102,7 @@ var constantModel = {
      
      checkForUpdate: function() {
           $.ajax({
+               type: 'POST',
                url: baseURL + '/ajaxCommands/checkForUpdate',
                data: {
                     project: constantModel.projectId,
@@ -257,17 +258,19 @@ var searchModel = {
 
 var meetingModel = {
 
-     var togglePanel: function(e) {
+     togglePanel: function(e) {
           var el = $( "#" + e.target.id);
           var target = el.data('target');
           var state = el.data('state');
           if(state == 'closed') {
                $('#' + target).css('right',0);
                el.data('state','open');
+               return;
           }
           if(state == 'open') {
-               $('#' + target).css('right','-200px');
+               $('#' + target).css('right','-300px');
                el.data('state','closed');
+               return;
           }
      }
 }

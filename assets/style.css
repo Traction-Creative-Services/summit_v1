@@ -136,13 +136,15 @@
 }
 
 .drawer {
-	width:200px;
+	width:300px;
 	position:fixed;
 	top:0;
-	right:-200px;
+	right:-300px;
 	border-left:1px solid #333;
 	background:#FFF;
 	height:100%;
+	transition:right 1s;
+	-webkit-transition:right 1s;
 }
 
 .drawer .pull-tab {
