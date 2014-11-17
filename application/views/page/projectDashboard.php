@@ -166,7 +166,7 @@
 </div>
 
 <div class="drawer" tabindex="-1" role="dialog">
-	<div class="pull-tab" data-target="meetingDrawer" data-state="closed">
+	<div id="meetingDrawerTab" class="pull-tab" data-target="meetingDrawer" data-state="closed">
 		<p>M</p>
 	</div>
 	<div class="drawer-inner"  id="meetingDrawer">
