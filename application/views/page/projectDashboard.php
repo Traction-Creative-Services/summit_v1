@@ -167,7 +167,7 @@
 
 <div class="drawer" tabindex="-1" role="dialog"  id="meetingDrawer">
 	<div id="meetingDrawerTab" class="pull-tab" data-target="meetingDrawer" data-state="closed">
-		M
+		<span class="glyphicon glyphicon-calendar" aria-hidden="true"></span>
 	</div>
 	<div class="drawer-inner">
 		<p class="lead">Meetings</p>
