@@ -267,7 +267,7 @@ var meetingModel = {
                return;
           }
           if(state == 'open') {
-               $('#' + target).css('right','-200px');
+               $('#' + target).css('right','-300px');
                el.data('state','closed');
                return;
           }
