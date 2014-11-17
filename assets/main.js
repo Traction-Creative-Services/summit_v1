@@ -102,6 +102,7 @@ var constantModel = {
      
      checkForUpdate: function() {
           $.ajax({
+               type: 'POST',
                url: baseURL + '/ajaxCommands/checkForUpdate',
                data: {
                     project: constantModel.projectId,

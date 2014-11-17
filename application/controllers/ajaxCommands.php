@@ -74,8 +74,8 @@ class ajaxCommands extends MY_Controller {
 	
 	public function checkForUpdate() {
 		$changed = array();
-		$tasks = $this->input->get('tasks');
-		$project = $this->input->get('project');
+		$tasks = $this->input->post('tasks');
+		$project = $this->input->post('project');
 		$this->load->model('Project','project');
 		$this->project->init($project);
 		
