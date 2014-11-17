@@ -257,7 +257,7 @@ var searchModel = {
 
 var meetingModel = {
 
-     var togglePanel: function(e) {
+     togglePanel: function(e) {
           var el = $( "#" + e.target.id);
           var target = el.data('target');
           var state = el.data('state');
