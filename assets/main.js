@@ -264,10 +264,12 @@ var meetingModel = {
           if(state == 'closed') {
                $('#' + target).css('right',0);
                el.data('state','open');
+               return;
           }
           if(state == 'open') {
                $('#' + target).css('right','-200px');
                el.data('state','closed');
+               return;
           }
      }
 }
