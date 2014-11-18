@@ -22,8 +22,8 @@ class Project extends CI_Model {
 		$this->id = $id;
 		$this->_loadAttributes();
 		$this->_loadTasks();
-		//$this->_loadMeetings();
-		//$this->_loadNotes();
+		$this->_loadMeetings();
+		$this->_loadNotes();
 		$this->_loadAgents();
 		//$this->_loadClient();
 	}

@@ -97,6 +97,34 @@ class ajaxCommands extends MY_Controller {
 		}
 		echo json_encode($changed);
 	}
+	
+	public function saveStartTimer() {
+		$task = $this->input->get('task');
+		$usr = $this->session->userdata('user');
+		$usrId = $usr['id'];
+		$now = date("Y-m-d H:i:s");
+		$data = array(
+			'task_id' => $task,
+			'user_id' => $usrId,
+			'type'    => 'start',
+			'time'    => $now
+		);
+		$this->db->insert('task_log',$data);
+	}
+	
+	public function saveEndTimer() {
+		$task = $this->input->get('task');
+		$usr = $this->session->userdata('user');
+		$usrId = $usr['id'];
+		$now= date("Y-m-d H:i:s");
+		$data = array(
+			'task_id' => $task,
+			'user_id' => $usrId,
+			'type' => 'end',
+			'time' => $now
+		);
+		$this->db->insert('task_log',$data);
+	}
 
 	
 	

@@ -4,6 +4,7 @@ $('.dropdown-menu').click(function(event){
 
 var dragId = '';
 var baseURL = 'http://summit.traction.media/index.php';
+var path = [];
 
 $(document).on( 'click', '.dropdown-menu', function(e) { searchModel.preventColapse(e) } );
 $(document).on( 'keyup', '#agent-search', function(e) { searchModel.findAgent(e) } );
@@ -15,18 +16,35 @@ $(document).on( 'dragstart', 'article', function(e) { drag(e) })
 $(document).on( 'click', '.more-btn', function(e) { taskModel.loadModal(e); })
 $(document).on( 'click', '#saveModalTask', function(e) {taskModel.saveModal()})
 $(document).on( 'click', '.pull-tab', function(e) {meetingModel.togglePanel(e); })
+$(document).on( 'click', '.timer-start', function(e) {timerModel.toggleTimer(e); })
 
 $(document).ready(function(e) {
-     var local = window.location.pathname;
-     var arr = local.split('/');
-     var controler = arr[(arr.length -2)];
-     if(arr[1] == 'beta') {
-          baseURL = 'http://summit.traction.media/beta/index.php';
-     }
-     if(controler == 'projectDetail') {
+     setBaseURL();
+     var controller = path[0];
+     var page = path[1];
+     
+     if(page == 'projectDetail') {
           constantModel.launch();
      }
 })
+
+function setBaseURL() {
+     var local = window.location.href;
+     var arr = local.split('/');
+     var indexPos = arr.indexOf('index.php');
+     var URL = '';
+     for(var i = 0; i < indexPos; i++) {
+          if (arr[i].length > 1 && arr[i] != 'http:') {
+               URL += arr[i] + "/";
+          }
+     }
+     URL = 'HTTP://' + URL + "index.php/";
+     for(var i = (indexPos + 1); i < arr.length; i++) {
+          path.push(arr[i])
+     }
+     baseURL = URL
+     return local;
+}
 
 function allowDrop(ev) {
      ev.preventDefault();
@@ -41,7 +59,7 @@ function drop(ev) {
      var task = document.getElementById(dragId);
      var target = ev.target.id;
      var targetClass = ev.target.className;
-     if (targetClass == 'col-md-3 dropTarget') {
+     if (targetClass == 'col-md-3 task-column dropTarget') {
           $('#' + target).append(task);
           updateTaskState(target);
      } else {
@@ -53,7 +71,7 @@ function updateTaskState(target) {
      var arr = target.split('-');
      var newState = arr[0];
      $.ajax({
-          url: baseURL + '/ajaxCommands/updateTaskStatus',
+          url: baseURL + 'ajaxCommands/updateTaskStatus',
           data: {
                newState: newState,
                task: dragId
@@ -103,7 +121,7 @@ var constantModel = {
      checkForUpdate: function() {
           $.ajax({
                type: 'POST',
-               url: baseURL + '/ajaxCommands/checkForUpdate',
+               url: baseURL + 'ajaxCommands/checkForUpdate',
                data: {
                     project: constantModel.projectId,
                     tasks: constantModel.taskArray
@@ -129,7 +147,7 @@ var taskModel = {
           var arr = id.split('-');
           var taskId = arr[2];
           $.ajax({
-               url: baseURL + '/ajaxCommands/getTask',
+               url: baseURL + 'ajaxCommands/getTask',
                data: {
                     task: taskId,
                },
@@ -139,12 +157,14 @@ var taskModel = {
                     $('#taskModalhiddenIdField').val(data.task_id);
                     $('#taskModaldescriptionField').val(data.description);
                     $('#taskModaldueDateField').val(data.due_on);
-                    $.each(data.members, function() {
-                         var HTML = '<li>';
-                         HTML += 'Member';
-                         HTML += '</li>';
-                         $('#taskModalmemberList').append(HTML);
-                    })
+                    var HTML = '';
+                    $.each(data.members, function(member) {
+                         console.log(data);
+                            HTML += '<li class="member-head" id="' + this.user_id + '">';
+                            HTML +=        '<img alt="' + this.initials + '" src="http://traction.media/summit/assets/uploads/' + this.thumb + '">';
+                            HTML += '</li>';
+                    });
+                    $("#taskModalMemberList").html(HTML);
                     $('#taskModal').modal()
                }
           })
@@ -163,7 +183,7 @@ var taskModel = {
           var description     = $('#taskModaldescriptionField').val();
           var duedate         = $('#taskModaldueDateField').val();
           $.ajax({
-               url: baseURL + '/ajaxCommands/updateTask',
+               url: baseURL + 'ajaxCommands/updateTask',
                data: {
                     task: taskId,
                     description: description,
@@ -272,5 +292,46 @@ var meetingModel = {
                el.data('state','closed');
                return;
           }
+     }
+}
+
+var timerModel = {
+     
+     toggleTimer: function(e) {
+          var el = $( "#" + e.target.id);
+          var arr = e.target.id.split('-');
+          var task = arr[1];
+          if (el.hasClass('timer-running')) {
+               timerModel.saveEndTime(task);
+               el.removeClass('timer-running');
+          } else {
+               timerModel.saveStartTime(task);
+               el.addClass('timer-running');
+          }
+     },
+     
+     saveStartTime: function(id) {
+          $.ajax({
+               url: baseURL + 'ajaxCommands/saveStartTimer',
+               data: {
+                    task: id
+               },
+               success: function() {
+                    alertModel.doAlert('Timer Started','success',3);
+               }
+          })
+     },
+     
+     saveEndTime: function(id) {
+          var now = Date.now();
+          $.ajax({
+               url: baseURL + 'ajaxCommands/saveEndTimer',
+               data: {
+                    task: id
+               },
+               success: function() {
+                    alertModel.doAlert('Timer Stopped','success',3);
+               }
+          })
      }
 }
