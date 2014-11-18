@@ -20,6 +20,11 @@
 	border-radius:10px;
 }
 
+.task-column {
+	max-height:600px;
+	overflow:auto;
+}
+
 /* TASK STYLING */
 
 .task {
@@ -90,21 +95,21 @@
 	max-height:27px;
 }
 
-.task footer ul {
+ul.members {
 	list-style:none;
 	padding:0;
 	margin:0;
 	padding:0 5px;
 }
 
-.task footer ul li {
+ul.members li {
 	float:left;
 	margin:0;
 	padding:5px;
 	font-size:0.8em;
 }
 
-.task footer ul li img {
+ul.members li img {
 	height:25px;
 	width:25px;
 	border:none;
@@ -115,8 +120,10 @@
 }
 
 .dropTarget {
-	border: 1px dashed black;
+	border: 1px dashed #333;
 	padding: -1px;
+	padding-bottom:40px;
+	border-bottom:10px solid #333;
 }
 
 #alert-box {
@@ -143,24 +150,77 @@
 	border-left:1px solid #333;
 	background:#FFF;
 	height:100%;
-	transition:right 1s;
-	-webkit-transition:right 1s;
+	transition:right .5s;
+	-webkit-transition:right .5s;
 }
 
 .drawer .pull-tab {
 	position:absolute;
 	top:100px;
-	left:-20px;
-	width:20px;
-	height:20px;
+	left:-40px;
+	width:40px;
+	height:40px;
 	border-radius:5px 0 0 5px;
 	-o-border-radius:5px 0 0 5px;
 	-moz-border-radius:5px 0 0 5px;
 	-webkit-border-radius:5px 0 0 5px;
+	padding-top:3px;
+	font-size:2em;
 	text-align:center;
 	background:#FFF;
 	border-left:1px solid #333;
 	border-top:1px solid #333;
 	border-right:1px solid #FFF;
 	border-bottom:1px solid#333;
+}
+
+.attention::after {
+	content:"";
+	background:red;
+	position:absolute;
+	top:-5px;
+	left:-5px;
+	height:10px;
+	width:10px;
+	border-radius:10px;
+	-o-border-radius:10px;
+	-moz-border-radius:10px;
+	-webkit-border-radius:10px;
+}
+
+.meeting {
+	width:280px;
+	margin:1.5em auto;
+	background:#eee;
+}
+
+.meeting>* {
+	margin:10px;
+}
+
+.attendees {
+	width:100%;
+	height:45px;
+	padding:5px 0;
+	background:#AAA;
+	margin:10px 0;
+}
+
+.attendees .host img {
+	border: 2px solid #F05C22;
+}
+
+.timer-start {
+	position:absolute;
+	top:37px;
+	left:5px;
+	color:#CCC;
+}
+
+.timer-start:hover {
+	color:#333;
+}
+
+.timer-running {
+	color:#F33;
 }
