@@ -74,8 +74,8 @@ class ajaxCommands extends MY_Controller {
 	
 	public function checkForUpdate() {
 		$changed = array();
-		$tasks = $this->input->get('tasks');
-		$project = $this->input->get('project');
+		$tasks = $this->input->post('tasks');
+		$project = $this->input->post('project');
 		$this->load->model('Project','project');
 		$this->project->init($project);
 		
@@ -96,6 +96,34 @@ class ajaxCommands extends MY_Controller {
 				$changed[] = $task->task_id;
 		}
 		echo json_encode($changed);
+	}
+	
+	public function saveStartTimer() {
+		$task = $this->input->get('task');
+		$usr = $this->session->userdata('user');
+		$usrId = $usr['id'];
+		$now = date("Y-m-d H:i:s");
+		$data = array(
+			'task_id' => $task,
+			'user_id' => $usrId,
+			'type'    => 'start',
+			'time'    => $now
+		);
+		$this->db->insert('task_log',$data);
+	}
+	
+	public function saveEndTimer() {
+		$task = $this->input->get('task');
+		$usr = $this->session->userdata('user');
+		$usrId = $usr['id'];
+		$now= date("Y-m-d H:i:s");
+		$data = array(
+			'task_id' => $task,
+			'user_id' => $usrId,
+			'type' => 'end',
+			'time' => $now
+		);
+		$this->db->insert('task_log',$data);
 	}
 
 	
