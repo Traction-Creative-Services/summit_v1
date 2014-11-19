@@ -53,6 +53,7 @@ class Project extends CI_Model {
 			}
 			
 			//get the task lists
+			//$task->lists = $this->_loadLists( $task, 'task_has_list', 'task_id', $tId );
 			$lists = $this->db->get_where( 'task_has_list', array( 'task_id' => $tId ) );
 			$task->lists = array();
 			foreach ( $lists->result() as $list ) {
@@ -100,20 +101,19 @@ class Project extends CI_Model {
 			}
 			
 			//get the meeting lists
+			//$meeting->lists = $this->_loadLists( $meeting, 'meeting_has_list', 'meeting_id', $mId );
 			$lists = $this->db->get_where( 'meeting_has_list', array( 'meeting_id' => $mId ) );
 			$meeting->lists = array();
 			foreach ( $lists->result() as $list ) {
 				$list_object = $this->db->get_where( 'list', array( 'list_id' => $list->list_id ) )->row();
 				$list_object->list_items = array();
-				foreach ( $list_object->result() as $item ) {
+				$list_items = $this->db->get_where( 'list_item', array( 'list_id' => $list->list_id ) );
+				foreach ( $list_items->result() as $item ) {
 					$list_item = $this->db->get_where( 'list_item', array( 'item_id' => $item->item_id ) )->row();
 					$list_object->list_items[] = $list_item;
 				}
 				$meeting->lists[] = $list_object;
 			}
-			
-			
-			
 			$this->meetings[] = $meeting;
 		}
 	}
@@ -139,5 +139,22 @@ class Project extends CI_Model {
 		$query = $this->db->get_where( 'client', array( 'client_id' => $this->client_id ) );
 		$this->client = $query->row();
 	}
+	
+	//private function _loadLists( $object_type, $object_has_list, $object_id_type, $object_id_type_match ) {
+	//	//get the meeting lists
+	//	$lists = $this->db->get_where( $object_has_list, array( $object_id_type => $object_id_type_match ) );
+	//	$object_type->lists = array();
+	//	foreach ( $lists->result() as $list ) {
+	//		$list_object = $this->db->get_where( 'list', array( 'list_id' => $list->list_id ) )->row();
+	//		$list_object->list_items = array();
+	//		$list_items = $this->db->get_where( 'list_item', array( 'list_id' => $list->list_id ) );
+	//		foreach ( $list_items->result() as $item ) {
+	//			$list_item = $this->db->get_where( 'list_item', array( 'item_id' => $item->item_id ) )->row();
+	//			$list_object->list_items[] = $list_item;
+	//		}
+	//		$object_type->lists[] = $list_object;
+	//	}
+	//	return $object_type;
+	//}
 
 }
