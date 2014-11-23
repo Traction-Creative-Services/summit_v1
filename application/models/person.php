@@ -16,6 +16,7 @@ class User extends CI_Model {
 	var $state		= '';
 	var $postal		= '';
 	var $phone		= '';
+	var $deleted		= '';
 
 	function __construct() {
 		parent::__construct();
@@ -46,6 +47,7 @@ class User extends CI_Model {
 		$this->state = $user_data->state;
 		$this->postal = $user_data->postal;
 		$this->phone = $user_data->phone;
+		$this->deleted = $user_data->deleted;
 	}
 	
 	public function saveAttributes() {
