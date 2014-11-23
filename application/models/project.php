@@ -6,8 +6,8 @@ class Project extends CI_Model {
 	var $name 		= '';
 	var $start 		= '';
 	var $end		= '';
+	var $client 		= '';
 	var $agents 		= array();
-	var $client 		= array();
 	var $tasks      	= array();
 	var $meetings 		= array();
 	var $notes		= array();
@@ -25,7 +25,7 @@ class Project extends CI_Model {
 		$this->_loadMeetings();
 		$this->_loadNotes();
 		$this->_loadAgents();
-		//$this->_loadClient();
+		$this->_loadClient();
 	}
 	
 	//****************** HELPER FUNCTIONS ******************//
@@ -36,6 +36,7 @@ class Project extends CI_Model {
 		$this->name = $project->name;
 		$this->start = $project->start;
 		$this->end = $project->end;
+		$this->client = $project->client_id;
 	}
 
 	private function _loadTasks() {
@@ -136,25 +137,8 @@ class Project extends CI_Model {
 	}
 
 	private function _loadClient() {
-		$query = $this->db->get_where( 'client', array( 'client_id' => $this->client_id ) );
+		$query = $this->db->get_where( 'project', array( 'client_id' => $this->client ) );
 		$this->client = $query->row();
 	}
-	
-	//private function _loadLists( $object_type, $object_has_list, $object_id_type, $object_id_type_match ) {
-	//	//get the meeting lists
-	//	$lists = $this->db->get_where( $object_has_list, array( $object_id_type => $object_id_type_match ) );
-	//	$object_type->lists = array();
-	//	foreach ( $lists->result() as $list ) {
-	//		$list_object = $this->db->get_where( 'list', array( 'list_id' => $list->list_id ) )->row();
-	//		$list_object->list_items = array();
-	//		$list_items = $this->db->get_where( 'list_item', array( 'list_id' => $list->list_id ) );
-	//		foreach ( $list_items->result() as $item ) {
-	//			$list_item = $this->db->get_where( 'list_item', array( 'item_id' => $item->item_id ) )->row();
-	//			$list_object->list_items[] = $list_item;
-	//		}
-	//		$object_type->lists[] = $list_object;
-	//	}
-	//	return $object_type;
-	//}
 
 }
