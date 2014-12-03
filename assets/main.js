@@ -312,7 +312,6 @@ var searchModel = {
 	findClient: function(e) {
 		e.stopPropagation
 	}
-<<<<<<< HEAD
 }
 
 var meetingModel = {
