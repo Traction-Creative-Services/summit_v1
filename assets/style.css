@@ -220,7 +220,6 @@ ul#taskModalMemberList li img {
 	-webkit-border-radius:5px;
 	-webkit-transition: opacity 1s;
 	transition: opacity 1s;
-<<<<<<< HEAD
 }
 
 .drawer {
@@ -313,6 +312,4 @@ ul#taskModalMemberList li img {
 .member-head .adder {
 	margin:0 10px 0 0;
 	padding:0;
-=======
->>>>>>> master
 }

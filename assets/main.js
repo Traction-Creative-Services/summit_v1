@@ -30,6 +30,9 @@ $(document).ready(function(e) {
           setBackdrop();
      }
 
+
+})
+
 function setBaseURL() {
      var local = window.location.href;
      var arr = local.split('/');
@@ -102,6 +105,13 @@ var constantModel = {
      meetingArray: [],
      noteArray: [],
      projectId: '',
+
+     launch: function() {
+          constantModel.setCurrentState();
+          setInterval(function() {
+               constantModel.checkForUpdate();
+          }, 5000);
+     },
      
      setCurrentState: function() {
           constantModel.projectId = $(".project-wrapper").attr('id');
