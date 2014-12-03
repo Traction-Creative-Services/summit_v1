@@ -4,6 +4,7 @@ $('.dropdown-menu').click(function(event){
 
 var dragId = '';
 var baseURL = 'http://summit.traction.media/index.php';
+var baseNoIndex = 'http://summit.traction.media/';
 var path = [];
 
 $(document).on( 'click', '.dropdown-menu', function(e) { searchModel.preventColapse(e) } );
@@ -17,6 +18,7 @@ $(document).on( 'click', '.more-btn', function(e) { taskModel.loadModal(e); })
 $(document).on( 'click', '#saveModalTask', function(e) {taskModel.saveModal()})
 $(document).on( 'click', '.pull-tab', function(e) {meetingModel.togglePanel(e); })
 $(document).on( 'click', '.timer-start', function(e) {timerModel.toggleTimer(e); })
+$(document).on( 'click', '#add-member', function(e) {taskModel.addMemberAction(e); })
 
 $(document).ready(function(e) {
      setBaseURL();
@@ -25,7 +27,10 @@ $(document).ready(function(e) {
      
      if(page == 'projectDetail') {
           constantModel.launch();
+          setBackdrop();
      }
+
+
 })
 
 function setBaseURL() {
@@ -38,12 +43,25 @@ function setBaseURL() {
                URL += arr[i] + "/";
           }
      }
+     baseNoIndex = 'http://' + URL;
      URL = 'HTTP://' + URL + "index.php/";
      for(var i = (indexPos + 1); i < arr.length; i++) {
           path.push(arr[i])
      }
      baseURL = URL
      return local;
+}
+
+function setBackdrop() {
+     var backdrop = Math.floor((Math.random() * 14) + 1);
+     if (backdrop > 14) {
+          backdrop = 14;
+     }
+     $('body').css('background','linear-gradient(rgba(0,0,0,0.9),rgba(0,0,0,0.8)), url("' + baseNoIndex + 'assets/backdrops/' + backdrop + '.jpg")');
+     $('body').css('-webkit-background-size', 'cover');
+     $('body').css('-moz-background-size', 'cover');
+     $('body').css('-o-background-size', 'cover');
+     $('body').css('background-size', 'cover');
 }
 
 function allowDrop(ev) {
@@ -161,9 +179,10 @@ var taskModel = {
                     $.each(data.members, function(member) {
                          console.log(data);
                             HTML += '<li class="member-head" id="' + this.user_id + '">';
-                            HTML +=        '<img alt="' + this.initials + '" src="http://traction.media/summit/assets/uploads/' + this.thumb + '">';
+                            HTML +=        '<img alt="' + this.initials + '" src="' + baseNoIndex + 'assets/uploads/' + this.thumb + '">';
                             HTML += '</li>';
                     });
+                    HTML += '<li class="member-head" id="add-member" data-task="' + data.task_id + '">+</li>';
                     $("#taskModalMemberList").html(HTML);
                     $('#taskModal').modal()
                }
@@ -198,7 +217,7 @@ var taskModel = {
      
      updateTask: function(id,alert) {
           $.ajax({
-               url: baseURL + '/ajaxCommands/getTask',
+               url: baseURL + 'ajaxCommands/getTask',
                data: {
                     task: id
                },
@@ -212,7 +231,7 @@ var taskModel = {
                     HTML +=           '<ul class="members">';
                                                 $.each(data.members, function(member) {
                                                         HTML += '<li class="member-head" id="' + member.user_id + '">';
-                                                        HTML +=        '<img alt="' + member.initials + '" src="http://traction.media/summit/assets/uploads/' + member.thumb + '">';
+                                                        HTML +=        '<img alt="' + member.initials + '" src="' + baseNoIndex + 'assets/uploads/' + member.thumb + '">';
                                                         HTML += '</li>';
                                                 });
                     HTML +=            '</ul>';
@@ -224,6 +243,35 @@ var taskModel = {
                          alertModel.doAlert('Task Saved','success',3);
                     }
                     
+               }
+          })
+     },
+     
+     addMemberAction: function(e) {
+          var el = $("#" + e.target.id );
+          var task = el.data('task');
+          taskModel.doMoreMembersList(task, el);
+     },
+     
+     doMoreMembersList: function(taskID, el) {
+          $.ajax({
+               url:baseURL + 'ajaxCommands/getAvailableMembers',
+               data: {
+                    'type': 'task',
+                    'id': taskID
+               },
+               success: function(data) {
+                    var HTML = '';
+                    var usr = JSON.parse(data);
+                    console.log(usr);
+                    HTML += '<ul>';
+                    $.each(usr, function() {
+                         HTML += '<li class="member-head adder" id="' + this.user_id + '">';
+                         HTML +=        '<img alt="' + this.initials + '" src="' + this.thumb + '">';
+                         HTML += '</li>';
+                    });
+                    HTML += '</ul>';
+                    $("#add-member").html(HTML);
                }
           })
      }
