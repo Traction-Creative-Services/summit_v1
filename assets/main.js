@@ -6,7 +6,6 @@ var dragId = '';
 var baseURL = 'http://summit.traction.media/index.php';
 var baseNoIndex = 'http://summit.traction.media/';
 var path = [];
-=======
 
 $(document).on( 'click', '.dropdown-menu', function(e) { searchModel.preventColapse(e) } );
 $(document).on( 'keyup', '#agent-search', function(e) { searchModel.findAgent(e) } );
