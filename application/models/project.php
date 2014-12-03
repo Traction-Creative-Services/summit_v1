@@ -106,14 +106,14 @@ class Project extends CI_Model {
 			$lists = $this->db->get_where( 'meeting_has_list', array( 'meeting_id' => $mId ) );
 			$meeting->lists = array();
 			foreach ( $lists->result() as $list ) {
-				$list_object = $this->db->get_where( 'list', array( 'list_id' => $list->list_id ) )->row();
+				/*$list_object = $this->db->get_where( 'list', array( 'list_id' => $list->list_id ) )->row();
 				$list_object->list_items = array();
 				$list_items = $this->db->get_where( 'list_item', array( 'list_id' => $list->list_id ) );
 				foreach ( $list_items->result() as $item ) {
 					$list_item = $this->db->get_where( 'list_item', array( 'item_id' => $item->item_id ) )->row();
 					$list_object->list_items[] = $list_item;
 				}
-				$meeting->lists[] = $list_object;
+				$meeting->lists[] = $list_object;*/
 			}
 			$this->meetings[] = $meeting;
 		}

@@ -49,6 +49,10 @@ class Welcome extends MY_Controller {
 			
 		}
 		
+		if(!isset($id)) {
+			$this->index();
+		}
+		
 		$userArray = array(
 			'id' 	=> $id,
 			'uname' => $uname,

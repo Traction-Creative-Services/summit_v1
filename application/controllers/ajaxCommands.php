@@ -125,6 +125,45 @@ class ajaxCommands extends MY_Controller {
 		);
 		$this->db->insert('task_log',$data);
 	}
+	
+	public function getAvailableMembers() {
+		$id = $this->input->get('id');
+		$type = $this->input->get('type');
+		
+		if($type == 'task') {
+			$table = 'task_has_agent';
+		} else {
+			$table = 'meeting_has_members';
+		}
+		$ref = $type.'_id';
+		
+		//get the users, all of them
+		$this->db->select('user_id');
+		$agents = $this->db->get_where('sec_user',array('type' => 2));
+		$users = array();
+		foreach($agents->result() as $row) {
+			$userID = $row->user_id;
+			$users[] = $userID;
+		}
+		
+		//remove users already on object
+		$this->db->select('user_id');
+		$inObj = $this->db->get_where($table, array($ref => $id));
+		foreach($inObj->result() as $usr) {
+			$usrID = $usr;
+			$pos = array_search($usrID,$users);
+			unset($users[$pos]);
+		}
+		
+		//get the full user objects of the remaining
+		$userObjs = array();
+		foreach($users as $usr) {
+			$this->load->model('user');
+			$this->user->load($usr);
+			$userObjs[] = $this->user->getUser();
+		}
+		echo json_encode($userObjs);
+	}
 
 	
 	
