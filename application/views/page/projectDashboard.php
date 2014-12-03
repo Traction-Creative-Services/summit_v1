@@ -133,6 +133,7 @@
       </div>
     </div>
   </div>
+<<<<<<< HEAD
 </div>
 
 <div class="drawer" tabindex="-1" role="dialog"  id="meetingDrawer">
@@ -165,4 +166,6 @@
 			 <?php } ?>
 		</div>
 	</div>
+=======
+>>>>>>> master
 </div>

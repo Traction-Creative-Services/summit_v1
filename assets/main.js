@@ -3,9 +3,12 @@ $('.dropdown-menu').click(function(event){
 });
 
 var dragId = '';
+<<<<<<< HEAD
 var baseURL = 'http://summit.traction.media/index.php';
 var baseNoIndex = 'http://summit.traction.media/';
 var path = [];
+=======
+>>>>>>> master
 
 $(document).on( 'click', '.dropdown-menu', function(e) { searchModel.preventColapse(e) } );
 $(document).on( 'keyup', '#agent-search', function(e) { searchModel.findAgent(e) } );
@@ -16,6 +19,7 @@ $(document).on( 'drop', 'div.col-md-3', function(e) { $(this).removeClass('dropT
 $(document).on( 'dragstart', 'article', function(e) { drag(e) })
 $(document).on( 'click', '.more-btn', function(e) { taskModel.loadModal(e); })
 $(document).on( 'click', '#saveModalTask', function(e) {taskModel.saveModal()})
+<<<<<<< HEAD
 $(document).on( 'click', '.pull-tab', function(e) {meetingModel.togglePanel(e); })
 $(document).on( 'click', '.timer-start', function(e) {timerModel.toggleTimer(e); })
 $(document).on( 'click', '#add-member', function(e) {taskModel.addMemberAction(e); })
@@ -31,6 +35,14 @@ $(document).ready(function(e) {
      }
 
 
+=======
+
+$(document).ready(function(e) {
+     constantModel.setCurrentState();
+     setInterval(function() {
+          constantModel.checkForUpdate();
+     }, 5000);
+>>>>>>> master
 })
 
 function setBaseURL() {
@@ -89,7 +101,11 @@ function updateTaskState(target) {
      var arr = target.split('-');
      var newState = arr[0];
      $.ajax({
+<<<<<<< HEAD
           url: baseURL + 'ajaxCommands/updateTaskStatus',
+=======
+          url: 'http://traction.media/summit/index.php/ajaxCommands/updateTaskStatus',
+>>>>>>> master
           data: {
                newState: newState,
                task: dragId
@@ -105,13 +121,6 @@ var constantModel = {
      meetingArray: [],
      noteArray: [],
      projectId: '',
-
-     launch: function() {
-          constantModel.setCurrentState();
-          setInterval(function() {
-               constantModel.checkForUpdate();
-          }, 5000);
-     },
      
      setCurrentState: function() {
           constantModel.projectId = $(".project-wrapper").attr('id');
@@ -138,8 +147,12 @@ var constantModel = {
      
      checkForUpdate: function() {
           $.ajax({
+<<<<<<< HEAD
                type: 'POST',
                url: baseURL + 'ajaxCommands/checkForUpdate',
+=======
+               url: 'http://traction.media/summit/index.php/ajaxCommands/checkForUpdate',
+>>>>>>> master
                data: {
                     project: constantModel.projectId,
                     tasks: constantModel.taskArray
@@ -165,7 +178,11 @@ var taskModel = {
           var arr = id.split('-');
           var taskId = arr[2];
           $.ajax({
+<<<<<<< HEAD
                url: baseURL + 'ajaxCommands/getTask',
+=======
+               url: 'http://traction.media/summit/index.php/ajaxCommands/getTask',
+>>>>>>> master
                data: {
                     task: taskId,
                },
@@ -202,7 +219,11 @@ var taskModel = {
           var description     = $('#taskModaldescriptionField').val();
           var duedate         = $('#taskModaldueDateField').val();
           $.ajax({
+<<<<<<< HEAD
                url: baseURL + 'ajaxCommands/updateTask',
+=======
+               url: 'http://traction.media/summit/index.php/ajaxCommands/updateTask',
+>>>>>>> master
                data: {
                     task: taskId,
                     description: description,
@@ -217,7 +238,11 @@ var taskModel = {
      
      updateTask: function(id,alert) {
           $.ajax({
+<<<<<<< HEAD
                url: baseURL + 'ajaxCommands/getTask',
+=======
+               url: 'http://traction.media/summit/index.php/ajaxCommands/getTask',
+>>>>>>> master
                data: {
                     task: id
                },
@@ -322,6 +347,7 @@ var searchModel = {
 	findClient: function(e) {
 		e.stopPropagation
 	}
+<<<<<<< HEAD
 }
 
 var meetingModel = {
@@ -382,4 +408,6 @@ var timerModel = {
                }
           })
      }
+=======
+>>>>>>> master
 }
