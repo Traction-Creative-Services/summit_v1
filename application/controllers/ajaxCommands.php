@@ -74,8 +74,8 @@ class ajaxCommands extends MY_Controller {
 	
 	public function checkForUpdate() {
 		$changed = array();
-		$tasks = $this->input->get('tasks');
-		$project = $this->input->get('project');
+		$tasks = $this->input->post('tasks');
+		$project = $this->input->post('project');
 		$this->load->model('Project','project');
 		$this->project->init($project);
 		
@@ -96,6 +96,73 @@ class ajaxCommands extends MY_Controller {
 				$changed[] = $task->task_id;
 		}
 		echo json_encode($changed);
+	}
+	
+	public function saveStartTimer() {
+		$task = $this->input->get('task');
+		$usr = $this->session->userdata('user');
+		$usrId = $usr['id'];
+		$now = date("Y-m-d H:i:s");
+		$data = array(
+			'task_id' => $task,
+			'user_id' => $usrId,
+			'type'    => 'start',
+			'time'    => $now
+		);
+		$this->db->insert('task_log',$data);
+	}
+	
+	public function saveEndTimer() {
+		$task = $this->input->get('task');
+		$usr = $this->session->userdata('user');
+		$usrId = $usr['id'];
+		$now= date("Y-m-d H:i:s");
+		$data = array(
+			'task_id' => $task,
+			'user_id' => $usrId,
+			'type' => 'end',
+			'time' => $now
+		);
+		$this->db->insert('task_log',$data);
+	}
+	
+	public function getAvailableMembers() {
+		$id = $this->input->get('id');
+		$type = $this->input->get('type');
+		
+		if($type == 'task') {
+			$table = 'task_has_agent';
+		} else {
+			$table = 'meeting_has_members';
+		}
+		$ref = $type.'_id';
+		
+		//get the users, all of them
+		$this->db->select('user_id');
+		$agents = $this->db->get_where('sec_user',array('type' => 2));
+		$users = array();
+		foreach($agents->result() as $row) {
+			$userID = $row->user_id;
+			$users[] = $userID;
+		}
+		
+		//remove users already on object
+		$this->db->select('user_id');
+		$inObj = $this->db->get_where($table, array($ref => $id));
+		foreach($inObj->result() as $usr) {
+			$usrID = $usr;
+			$pos = array_search($usrID,$users);
+			unset($users[$pos]);
+		}
+		
+		//get the full user objects of the remaining
+		$userObjs = array();
+		foreach($users as $usr) {
+			$this->load->model('user');
+			$this->user->load($usr);
+			$userObjs[] = $this->user->getUser();
+		}
+		echo json_encode($userObjs);
 	}
 
 	

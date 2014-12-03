@@ -1,50 +1,16 @@
 <div class="container project-wrapper" id="<?php echo $project->id; ?>">
-	<div class="navbar navbar-fixed-top navbar-inverse">
-		<div class="navbar-header">
-			<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-				<span class="sr-only">Toggle navigation</span>
-				<span class="icon-bar"></span>
-				<span class="icon-bar"></span>
-				<span class="icon-bar"></span>
-			</button>
-			<a class="navbar-brand" href="#"><?php echo $project->name; ?></a>
-	    </div>
-		<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-			<ul class="nav navbar-nav navbar-right">
-				<li class="dropdown">
-					<a class="dropdown-toggle" data-toggle="dropdown" href="#">Team <span class="caret"></span></a>
-					<ul class="dropdown-menu">
-						<input type="search" id="agent-search" placeholder="Add Team Member..." class="form-control">
-						<div id="agent-heads-container">
-							<?php //echo $project->agentHeads; ?>
-						</div>
-					</ul>
-				</li>
-				<li class="dropdown">
-					<a class="dropdwon-toggle" data-toggle="dropdown" href="#">Client <span class="caret"></span></a>
-					<ul class="dropdown-menu">
-						<input type="search" id="client-search" placeholder="Add Client..." class="form-control">
-						<div id="client-container">
-							<?php //echo $project->clientCard; ?>
-						</div>
-					</ul>
-				</li>
-				<li class="active"><a>Starts on: <?php echo date('M-d-y',strtotime($project->start)); ?></a></li>
-				<li class="active"><a>Launch on: <?php echo date('M-d-y',strtotime($project->end)); ?>&nbsp;&nbsp;&nbsp;</a></li>
-			</ul>
-		</div>
-	</div>
 
 	<div class="row">
-		<div class="col-md-3" id="ready-column" ondragover="allowDrop(event)" ondrop="drop(event)">
+		<div class="col-md-3 task-column" id="ready-column" ondragover="allowDrop(event)" ondrop="drop(event)">
 			<p class="lead">Ready</p>
 			<?php foreach($project->tasks as $task) {
 				if ( $task->status == 0 ) { ?>
-					<article class="task" draggable="true" id="<?php echo $task->task_id; ?>">
+					<article class="task" draggable="true" id="task-<?php echo $task->task_id; ?>">
 						<header>
 							<p class="lead"><?php echo $task->name; ?></p>
 							<span class="due-on <?php echo $task->dueState; ?>"><?php echo $task->due_on; ?></span>
 						</header>
+						<span class="glyphicon glyphicon-time timer-start" id="timer-<?php echo $task->task_id; ?>"></span>
 						<p class="task-description"><?php echo $task->description; ?></p>
 						<footer>
 							<ul class="members">
@@ -54,21 +20,23 @@
 									</li>
 								<?php } ?>
 							</ul>
+							
 							<span class="more-btn" id="more-btn-<?php echo $task->task_id; ?>">...</span>
 						</footer>
 					</article>
 				 <?php }
 			}?>
 		</div>
-		<div class="col-md-3" id="doing-column" ondragover="allowDrop(event)" ondrop="drop(event)">
+		<div class="col-md-3 task-column" id="doing-column" ondragover="allowDrop(event)" ondrop="drop(event)">
 			<p class="lead">Doing</p>
 			<?php foreach($project->tasks as $task) {
 				if ( $task->status == 1 ) { ?>
-					<article class="task" draggable="true" id="<?php echo $task->task_id; ?>">
+					<article class="task" draggable="true" id="task-<?php echo $task->task_id; ?>">
 						<header>
 							<p class="lead"><?php echo $task->name; ?></p>
 							<span class="due-on <?php echo $task->dueState; ?>"><?php echo $task->due_on; ?></span>
 						</header>
+						<span class="glyphicon glyphicon-time timer-start" id="timer-<?php echo $task->task_id; ?>"></span>
 						<p class="task-description"><?php echo $task->description; ?></p>
 						<footer>
 							<ul class="members">
@@ -84,15 +52,16 @@
 				 <?php }
 			} ?>
 		</div>
-		<div class="col-md-3" id="review-column" ondragover="allowDrop(event)" ondrop="drop(event)">
+		<div class="col-md-3 task-column" id="review-column" ondragover="allowDrop(event)" ondrop="drop(event)">
 			<p class="lead">Review</p>
 			<?php foreach($project->tasks as $task) {
 				if ( $task->status == 2 ) { ?>
-					<article class="task" draggable="true" id="<?php echo $task->task_id; ?>">
+					<article class="task" draggable="true" id="task-<?php echo $task->task_id; ?>">
 						<header>
 							<p class="lead"><?php echo $task->name; ?></p>
 							<span class="due-on <?php echo $task->dueState; ?>"><?php echo $task->due_on; ?></span>
 						</header>
+						<span class="glyphicon glyphicon-time timer-start" id="timer-<?php echo $task->task_id; ?>"></span>
 						<p class="task-description"><?php echo $task->description; ?></p>
 						<footer>
 							<ul class="members">
@@ -108,15 +77,16 @@
 				<?php }
 			}?>
 		</div>
-		<div class="col-md-3" id="complete-column" ondragover="allowDrop(event)" ondrop="drop(event)">
+		<div class="col-md-3 task-column" id="complete-column" ondragover="allowDrop(event)" ondrop="drop(event)">
 			<p class="lead">Complete</p>
 			<?php foreach($project->tasks as $task) {
 				if ( $task->status == 3 ) { ?>
-					<article class="task" draggable="true" id="<?php echo $task->task_id; ?>">
+					<article class="task" draggable="true" id="task-<?php echo $task->task_id; ?>">
 						<header>
 							<p class="lead"><?php echo $task->name; ?></p>
 							<span class="due-on <?php echo $task->dueState; ?>"><?php echo $task->due_on; ?></span>
 						</header>
+						<span class="glyphicon glyphicon-time timer-start" id="timer-<?php echo $task->task_id; ?>"></span>
 						<p class="task-description"><?php echo $task->description; ?></p>
 						<footer>
 							<ul class="members">
@@ -154,7 +124,7 @@
 		<label for="taskModaldueDateField">Due On</label>
 		<input type="date" value="" id="taskModaldueDateField" class="form-control" />	
 	</div>
-	<ul id="taskModalmemberList">
+	<ul class="members" id="taskModalMemberList">
 	</ul>
       </div>
       <div class="modal-footer">
@@ -163,4 +133,39 @@
       </div>
     </div>
   </div>
+<<<<<<< HEAD
+</div>
+
+<div class="drawer" tabindex="-1" role="dialog"  id="meetingDrawer">
+	<div id="meetingDrawerTab" class="pull-tab glyphicon glyphicon-calendar" data-target="meetingDrawer" data-state="closed">
+		<!--span class="glyphicon glyphicon-calendar tab-trigger" aria-hidden="true"></span-->
+	</div>
+	<div class="drawer-inner">
+		<p class="lead">Meetings</p>
+		<hr />
+		<div class="meetings-container">
+			<?php foreach($project->meetings as $meeting) { ?>
+				<article class="meeting" id="meeting-<?php echo $meeting->meeting_id; ?>">
+					<header class="meeting-header">
+						<p class="lead"><?php echo $meeting->name; ?></p>
+					</header>
+					<p><?php echo $meeting->description; ?></p>
+					<div class="attendees well">
+						<ul class="members">
+							<?php foreach($meeting->members as $member) { ?>
+								<li class="member-head <?php if($member->user_id == $meeting->host_id) echo 'host'; ?>" id="<?php echo $member->user_id; ?>">
+									<img alt="<?php echo $member->initials; ?>" src="<?php echo base_url('assets/uploads/'.$member->thumb); ?>">
+								</li>
+							<?php } ?>
+						</ul>
+					</div>
+					<footer>
+						<p>On <?php echo date('M, j',strtotime($meeting->when)); ?> At <?php echo date('h:i A',strtotime($meeting->when)); ?> <a target="_blank" href="https://www.google.com/maps/search/<?php echo urlencode(str_replace(" ", "+", $meeting->where)); ?>"><span class="glyphicon glyphicon-map-marker"></span></a> </p>
+					</footer>
+				</article>
+			 <?php } ?>
+		</div>
+	</div>
+=======
+>>>>>>> master
 </div>
