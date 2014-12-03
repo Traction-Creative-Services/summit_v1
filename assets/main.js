@@ -30,16 +30,6 @@ $(document).ready(function(e) {
           setBackdrop();
      }
 
-
-=======
-
-$(document).ready(function(e) {
-     constantModel.setCurrentState();
-     setInterval(function() {
-          constantModel.checkForUpdate();
-     }, 5000);
-})
-
 function setBaseURL() {
      var local = window.location.href;
      var arr = local.split('/');
