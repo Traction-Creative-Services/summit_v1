@@ -220,7 +220,6 @@ ul#taskModalMemberList li img {
 	-webkit-border-radius:5px;
 	-webkit-transition: opacity 1s;
 	transition: opacity 1s;
-<<<<<<< HEAD
 }
 
 .drawer {
@@ -313,6 +312,20 @@ ul#taskModalMemberList li img {
 .member-head .adder {
 	margin:0 10px 0 0;
 	padding:0;
-=======
->>>>>>> master
+}
+
+#agent-heads-container, #client-container {
+		width:200px;
+		padding:0.5em 1em 1em 1em;
+}
+
+.add-btn {
+		background:#393;
+		color:#FFF;
+		border:none;
+		height:30px;
+		width:30px;
+		border-radius:15px;
+		-webkit-border-radius:15px;
+		padding-top:0;
 }

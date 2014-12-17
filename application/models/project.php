@@ -137,8 +137,9 @@ class Project extends CI_Model {
 	}
 
 	private function _loadClient() {
-		$query = $this->db->get_where( 'project', array( 'client_id' => $this->client ) );
-		$this->client = $query->row();
+		$this->load->model('person');
+		$this->person->init($this->client);
+		$this->client = $this->person->getPerson();
 	}
 
 }

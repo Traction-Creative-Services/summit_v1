@@ -15,10 +15,12 @@ $(document).on( 'dragleave', 'div.col-md-3', function(e) { $(this).removeClass('
 $(document).on( 'drop', 'div.col-md-3', function(e) { $(this).removeClass('dropTarget'); })
 $(document).on( 'dragstart', 'article', function(e) { drag(e) })
 $(document).on( 'click', '.more-btn', function(e) { taskModel.loadModal(e); })
-$(document).on( 'click', '#saveModalTask', function(e) {taskModel.saveModal()})
+$(document).on( 'click', '#saveModalTask', function(e) {taskModel.saveModal(); })
+$(document).on( 'click', '#saveNewTask', function(e) {taskModel.saveModalNew(); })
 $(document).on( 'click', '.pull-tab', function(e) {meetingModel.togglePanel(e); })
 $(document).on( 'click', '.timer-start', function(e) {timerModel.toggleTimer(e); })
 $(document).on( 'click', '#add-member', function(e) {taskModel.addMemberAction(e); })
+$(document).on( 'click', '#add-task-btn', function(e) {taskModel.addTaskAction(e); })
 
 $(document).ready(function(e) {
      setBaseURL();
@@ -114,14 +116,15 @@ var constantModel = {
      },
      
      setCurrentState: function() {
+          constantModel.taskArray = [];
           constantModel.projectId = $(".project-wrapper").attr('id');
           $('article.task').each(function() {
                var members = [];
                var id = $(this).attr('id');
                id = id.substring(5);
-               var title = $('article#'+id+'>header>p.lead').html();
-               var dueOn = $('article#'+id+'>header>span.due-on').html();
-               var description = $('article#'+id+'>p.task-description').html();
+               var title = $('article#task-'+id+'>header>p.lead').html();
+               var dueOn = $('article#task-'+id+'>header>span.due-on').html();
+               var description = $('article#task-'+id+'>p.task-description').html();
                $('article#'+id+'>ul>li.member-head').each(function() {
                     var memberId = $(this).attr('id');
                     members.push(memberId);
@@ -139,7 +142,7 @@ var constantModel = {
      
      checkForUpdate: function() {
           $.ajax({
-               type: 'POST',
+               type: 'GET',
                url: baseURL + 'ajaxCommands/checkForUpdate',
                data: {
                     project: constantModel.projectId,
@@ -172,13 +175,13 @@ var taskModel = {
                },
                success: function(data) {
                     taskModel.clearModal();
+                    $('.save-btn').attr('id','saveModalTask');
                     $('#taskModalLabel').html(data.name);
                     $('#taskModalhiddenIdField').val(data.task_id);
                     $('#taskModaldescriptionField').val(data.description);
                     $('#taskModaldueDateField').val(data.due_on);
                     var HTML = '';
                     $.each(data.members, function(member) {
-                         console.log(data);
                             HTML += '<li class="member-head" id="' + this.user_id + '">';
                             HTML +=        '<img alt="' + this.initials + '" src="' + baseNoIndex + 'assets/uploads/' + this.thumb + '">';
                             HTML += '</li>';
@@ -196,6 +199,7 @@ var taskModel = {
           $('#taskModaldescriptionField').val('');
           $('#taskModaldueDateField').val('');
           $('#taskModalmemberList').html('');
+          $("#taskModalNameField").remove();
      },
      
      saveModal: function() {
@@ -230,16 +234,21 @@ var taskModel = {
                     HTML +=     '<p class="task-description">' + data.description + '</p>';
                     HTML +=     '<footer>';
                     HTML +=           '<ul class="members">';
-                                                $.each(data.members, function(member) {
-                                                        HTML += '<li class="member-head" id="' + member.user_id + '">';
-                                                        HTML +=        '<img alt="' + member.initials + '" src="' + baseNoIndex + 'assets/uploads/' + member.thumb + '">';
-                                                        HTML += '</li>';
-                                                });
                     HTML +=            '</ul>';
                     HTML +=            '<span class="more-btn" id="more-btn-' + data.task_id + '">...</span>';
                     HTML +=     '</footer>';
                     
                     $('article#' + id).html(HTML);
+                    
+                    var members = $.map(data.members, function(value,index) {return [value] } );
+                    $.each(members, function(data) {
+                         var member = members[data];
+                         HTML = '<li class="member-head" id="' + member.user_id + '">';
+                         HTML +=        '<img alt="' + member.initials + '" src="' + baseNoIndex + 'assets/uploads/' + member.thumb + '">';
+                         HTML += '</li>';
+                         $('article#' + id + '>.members').append(HTML);
+                    });
+                    
                     if (alert) {
                          alertModel.doAlert('Task Saved','success',3);
                     }
@@ -255,6 +264,7 @@ var taskModel = {
      },
      
      doMoreMembersList: function(taskID, el) {
+          var activeTask = taskID;
           $.ajax({
                url:baseURL + 'ajaxCommands/getAvailableMembers',
                data: {
@@ -264,15 +274,102 @@ var taskModel = {
                success: function(data) {
                     var HTML = '';
                     var usr = JSON.parse(data);
-                    console.log(usr);
-                    HTML += '<ul>';
                     $.each(usr, function() {
-                         HTML += '<li class="member-head adder" id="' + this.user_id + '">';
-                         HTML +=        '<img alt="' + this.initials + '" src="' + this.thumb + '">';
+                         HTML += '<li class="member-head adder" id="' + this.id + '">';
+                         HTML +=        '<img alt="' + this.initials + '" src="' + baseNoIndex + 'assets/uploads/' + this.thumb + '">';
                          HTML += '</li>';
                     });
-                    HTML += '</ul>';
-                    $("#add-member").html(HTML);
+                    $("#add-member").remove();
+                    $("#saveModalTask").attr('disabled','true');
+                    $("#taskModalMemberList").append(HTML);
+                    $(".adder").click(function() {
+                         var crewMember = $(this).attr('id');
+                         $.ajax({
+                              url:baseURL + 'ajaxCommands/addMember',
+                              data: {
+                                   'type': 'task',
+                                   'id': activeTask,
+                                   'member': crewMember
+                              },
+                              success: function(member) {
+                                   member = JSON.parse(member);
+                                   HTML =  '<li class="member-head" id="' + member.id + '">';
+                                   HTML +=        '<img alt="' + member.initials + '" src="' + baseNoIndex + 'assets/uploads/' + member.thumb + '">';
+                                   HTML += '</li>';
+                                   HTML += '<li class="member-head" id="add-member" data-task="' + data.task_id + '">+</li>';
+                                   $(".adder").remove();
+                                   $("#taskModalMemberList").append(HTML);
+                                   $("#saveModalTask").removeAttr('disabled');
+                              }
+                         })
+                    })
+               }
+          })
+     },
+     
+     addTaskAction: function(e) {
+          taskModel.clearModal();
+          $('.save-btn').attr('id','saveNewTask');
+          $('.modal-header').append('<input type="text" value="" id="taskModalNameField" placeholder="Name" class="form-control" />');
+          $('#taskModal').modal();
+     },
+     
+     saveModalNew: function(e) {
+          var taskName        = $('#taskModalNameField').val();
+          var description     = $('#taskModaldescriptionField').val();
+          var duedate         = $('#taskModaldueDateField').val();
+          var project         = $('.project-wrapper').attr('id');
+          $.ajax({
+               url: baseURL + 'ajaxCommands/addTask',
+               data: {
+                    name: taskName,
+                    description: description,
+                    due: duedate,
+                    project: project
+               },
+               success: function(data) {
+                    $('#taskModal').modal('hide');
+                    console.log(data);
+                    taskModel.appendTask(data, true);
+               }
+          })
+     },
+     
+     appendTask: function(id, alert) {
+          $.ajax({
+               url: baseURL + 'ajaxCommands/getTask',
+               data: {
+                    task: id
+               },
+               success: function(data) {
+                    var HTML = '<article class="task" draggable="true" id="task-' + data.task_id + '">'
+                    HTML +=    '<header>';
+                    HTML +=         '<p class="lead">' + data.name + '</p>';
+                    HTML +=         '<span class="due-on ' + data.dueState + '">' + data.due_on + '</span>';
+                    HTML +=     '</header>';
+                    HTML +=     '<p class="task-description">' + data.description + '</p>';
+                    HTML +=     '<footer>';
+                    HTML +=           '<ul class="members">';
+                    HTML +=            '</ul>';
+                    HTML +=            '<span class="more-btn" id="more-btn-' + data.task_id + '">...</span>';
+                    HTML +=     '</footer>';
+                    HTML +=     '</article>';
+                    
+                    $('#ready-column').append(HTML);
+                    
+                    var members = $.map(data.members, function(value,index) {return [value] } );
+                    $.each(members, function(data) {
+                         var member = members[data];
+                         HTML = '<li class="member-head" id="' + member.user_id + '">';
+                         HTML +=        '<img alt="' + member.initials + '" src="' + baseNoIndex + 'assets/uploads/' + member.thumb + '">';
+                         HTML += '</li>';
+                         $('article#' + id + '>.members').append(HTML);
+                    });
+                    
+                    if (alert) {
+                         alertModel.doAlert('Task Added','success',3);
+                    }
+                    
                }
           })
      }

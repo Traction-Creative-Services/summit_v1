@@ -42,18 +42,26 @@
 				<li class="dropdown">
 					<a class="dropdown-toggle" data-toggle="dropdown" href="#">Team <span class="caret"></span></a>
 					<ul class="dropdown-menu">
-						<input type="search" id="agent-search" placeholder="Add Team Member..." class="form-control">
 						<div id="agent-heads-container">
-							<?php //echo $project->agentHeads; ?>
+							<ul class="members">
+								<?php foreach($project->agents as $member) { ?>
+									<li class="member-head" id="<?php echo $member->user_id; ?>">
+										<img alt="<?php echo $member->initials; ?>" src="<?php echo base_url('assets/uploads/'.$member->thumb); ?>">
+									</li>
+								<?php } ?>
+							</ul>
+							<span cla
 						</div>
 					</ul>
 				</li>
 				<li class="dropdown">
 					<a class="dropdwon-toggle" data-toggle="dropdown" href="#">Client <span class="caret"></span></a>
 					<ul class="dropdown-menu">
-						<input type="search" id="client-search" placeholder="Add Client..." class="form-control">
 						<div id="client-container">
-							<?php //echo $project->clientCard; ?>
+							<p class="lead"><?php echo $project->client->first.' '.$project->client->last; ?><br />
+							<small><?php if(isset($project->client->company->name)) echo $project->client->company->name; ?></small></p>
+							<p><small>ph</small> <?php echo $project->client->phone; ?><br />
+							<small>em</small> <?php echo $project->client->email; ?></p>
 						</div>
 					</ul>
 				</li>
