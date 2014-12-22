@@ -21,6 +21,8 @@ $(document).on( 'click', '.pull-tab', function(e) {meetingModel.togglePanel(e); 
 $(document).on( 'click', '.timer-start', function(e) {timerModel.toggleTimer(e); })
 $(document).on( 'click', '#add-member', function(e) {taskModel.addMemberAction(e); })
 $(document).on( 'click', '#add-task-btn', function(e) {taskModel.addTaskAction(e); })
+$(document).on( 'click', '#add-ticket-btn', function(e) {ticketModel.addTicketAction(e); })
+$(document).on( 'click', '#saveTicket', function(e) {ticketModel.saveTicket(); })
 
 $(document).ready(function(e) {
      setBaseURL();
@@ -28,11 +30,17 @@ $(document).ready(function(e) {
      var page = path[1];
      
      if(page == 'projectDetail') {
-          constantModel.launch();
-          setBackdrop();
+          if (controller == 'agent') {
+               constantModel.launch();
+               setBackdrop();
+          }
+          if (controller == 'client') {
+               setClean();
+               charts.initCharts();
+          }    
      }
-
-
+     $('[data-toggle="tooltip"]').tooltip();
+     
 })
 
 function setBaseURL() {
@@ -64,6 +72,33 @@ function setBackdrop() {
      $('body').css('-moz-background-size', 'cover');
      $('body').css('-o-background-size', 'cover');
      $('body').css('background-size', 'cover');
+}
+
+function setClean() {
+     $('body').css('background','#FFF');
+     $('.ticket-urgency').each(function() {
+          var urgency = $(this).data('urgency');
+          switch(urgency) {
+               case 0:
+                    $(this).addClass('urgency-zero');
+                    break;
+               case 1:
+                    $(this).addClass('urgency-one');
+                    break;
+               case 2:
+                    $(this).addClass('urgency-two');
+                    break;
+               case 3:
+                    $(this).addClass('urgency-three');
+                    break;
+               case 4:
+                    $(this).addClass('urgency-four');
+                    break;
+               case 5:
+                    $(this).addClass('urgency-five');
+                    break;
+          }
+     })
 }
 
 function allowDrop(ev) {
@@ -206,13 +241,14 @@ var taskModel = {
           var taskId          = $('#taskModalhiddenIdField').val();
           var description     = $('#taskModaldescriptionField').val();
           var duedate         = $('#taskModaldueDateField').val();
-          $.ajax({
-               url: baseURL + 'ajaxCommands/updateTask',
-               data: {
+          var data = {
                     task: taskId,
                     description: description,
                     due: duedate
-               },
+               };
+          $.ajax({
+               url: baseURL + 'ajaxCommands/updateTask',
+               data: data,
                success: function(data) {
                     $('#taskModal').modal('hide');
                     taskModel.updateTask(taskId, true);
@@ -319,14 +355,15 @@ var taskModel = {
           var description     = $('#taskModaldescriptionField').val();
           var duedate         = $('#taskModaldueDateField').val();
           var project         = $('.project-wrapper').attr('id');
-          $.ajax({
-               url: baseURL + 'ajaxCommands/addTask',
-               data: {
+          var data = {
                     name: taskName,
                     description: description,
                     due: duedate,
                     project: project
-               },
+               };
+          $.ajax({
+               url: baseURL + 'ajaxCommands/addTask',
+               data: data,
                success: function(data) {
                     $('#taskModal').modal('hide');
                     console.log(data);
@@ -336,6 +373,83 @@ var taskModel = {
      },
      
      appendTask: function(id, alert) {
+          $.ajax({
+               url: baseURL + 'ajaxCommands/getTask',
+               data: {
+                    task: id
+               },
+               success: function(data) {
+                    var HTML = '<article class="task" draggable="true" id="task-' + data.task_id + '">'
+                    HTML +=    '<header>';
+                    HTML +=         '<p class="lead">' + data.name + '</p>';
+                    HTML +=         '<span class="due-on ' + data.dueState + '">' + data.due_on + '</span>';
+                    HTML +=     '</header>';
+                    HTML +=     '<p class="task-description">' + data.description + '</p>';
+                    HTML +=     '<footer>';
+                    HTML +=           '<ul class="members">';
+                    HTML +=            '</ul>';
+                    HTML +=            '<span class="more-btn" id="more-btn-' + data.task_id + '">...</span>';
+                    HTML +=     '</footer>';
+                    HTML +=     '</article>';
+                    
+                    $('#ready-column').append(HTML);
+                    
+                    var members = $.map(data.members, function(value,index) {return [value] } );
+                    $.each(members, function(data) {
+                         var member = members[data];
+                         HTML = '<li class="member-head" id="' + member.user_id + '">';
+                         HTML +=        '<img alt="' + member.initials + '" src="' + baseNoIndex + 'assets/uploads/' + member.thumb + '">';
+                         HTML += '</li>';
+                         $('article#' + id + '>.members').append(HTML);
+                    });
+                    
+                    if (alert) {
+                         alertModel.doAlert('Task Added','success',3);
+                    }
+                    
+               }
+          })
+     },
+
+}
+
+var ticketModel = {
+     /* CLIENT FACING */
+     clearModal: function() {
+          $('#ticketSubjectField').val('');
+          $('#ticketBodyField').val('');
+          $('#ticketUrgencyField').val('');
+     },
+     
+     addTicketAction: function(e) {
+          ticketModel.clearModal();
+          $('.save-btn').attr('id','saveTicket');
+          $('.modal-header').append('<input type="text" value="" id="ticketSubjectField" placeholder="Subject" class="form-control" />');
+          $('#ticketModal').modal();
+     },
+     
+     saveTicket: function(e) {
+          var subject         = $('#ticketSubjectField').val();
+          var description     = $('#ticketBodyField').val();
+          var urgency         = $('#ticketUrgencyField').val();
+          var project         = $('.project-wrapper').attr('id');
+          var data = {
+                    subject: tasksubjectName,
+                    description: description,
+                    urgency: urgency,
+                    project: project
+               };
+          $.ajax({
+               url: baseURL + 'ajaxCommands/addTicket',
+               data: data,
+               success: function(data) {
+                    $('#taskModal').modal('hide');
+                    ticketModel.appendTicket(data, true);
+               }
+          })
+     },
+     
+     appendTicket: function(id, alert) {
           $.ajax({
                url: baseURL + 'ajaxCommands/getTask',
                data: {
@@ -479,5 +593,87 @@ var timerModel = {
                     alertModel.doAlert('Timer Stopped','success',3);
                }
           })
+     }
+}
+
+var charts = {
+     
+     taskStatusChart: {
+          chart: null,
+          cts: null,
+          data: null,
+          options: null,
+          init: function() {
+               charts.taskStatusChart.ctx = document.getElementById("taskStatusChart").getContext("2d");
+               charts.taskStatusChart.data = [
+                    {
+                        value: $('#taskStatusChart').data('ready'),
+                        color:'#07666A',
+                        highlight: '#2C8589',
+                        label: 'On Deck'
+                    },
+                    {
+                        value: $('#taskStatusChart').data('doing'),
+                        color:'#AF570B',
+                        highlight: '#D4711C',
+                        label: 'In Progress'
+                    },
+                    {
+                        value: $('#taskStatusChart').data('review'),
+                        color: '#AF0F0B',
+                        highlight: '#D4211C',
+                        label: 'In Review'
+                    },
+                    {
+                        value: $('#taskStatusChart').data('complete'),
+                        color: '#098A11',
+                        highlight: '#16A71F',
+                        label: 'Completed'
+                    }
+                ];
+               charts.taskStatusChart.options = {
+                    segmentShowStroke: false,
+                    animationEasing: "easeOut",
+                    animateScale: true,
+                };
+              charts.taskStatusChart.chart = new Chart(charts.taskStatusChart.ctx).Pie(charts.taskStatusChart.data,charts.taskStatusChart.options);
+          }
+     },
+     
+     ontimeStatusChart: {
+          chart: null,
+          ctx: null,
+          data: null,
+          options: null,
+          init: function() {
+               charts.ontimeStatusChart.ctx = document.getElementById("onTimeStatusChart").getContext("2d");
+               charts.ontimeStatusChart.data = [
+                    {
+                         value: $('#onTimeStatusChart').data('ontime'),
+                         color: '#098A11',
+                         highlight: '#16A71F',
+                         label: 'On Time'
+                    },
+                    {
+                         value: $('#onTimeStatusChart').data('late'),
+                         color: '#AF0F0B',
+                         highlight: '#D4211C',
+                         label: 'Late'
+                    }
+               ];
+               charts.ontimeStatusChart.options = {
+                    segmentShowStroke: false,
+                    animationEasing: "easeOut",
+                    animateScale: true,
+               };
+                    
+               charts.ontimeStatusChart.chart = new Chart(charts.ontimeStatusChart.ctx).Pie(charts.ontimeStatusChart.data,charts.ontimeStatusChart.options);
+          }
+     },
+     
+     
+     initCharts: function() {
+          charts.taskStatusChart.init();
+          charts.ontimeStatusChart.init();
      }
 }

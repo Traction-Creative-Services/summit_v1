@@ -6,10 +6,11 @@ class Project extends CI_Model {
 	var $name 		= '';
 	var $start 		= '';
 	var $end		= '';
-	var $client 		= '';
-	var $agents 		= array();
-	var $tasks      	= array();
-	var $meetings 		= array();
+	var $client 	= '';
+	var $agents 	= array();
+	var $tasks      = array();
+	var $tickets	= array();
+	var $meetings 	= array();
 	var $notes		= array();
 
 	
@@ -22,6 +23,7 @@ class Project extends CI_Model {
 		$this->id = $id;
 		$this->_loadAttributes();
 		$this->_loadTasks();
+		$this->_loadTickets();
 		$this->_loadMeetings();
 		$this->_loadNotes();
 		$this->_loadAgents();
@@ -84,6 +86,22 @@ class Project extends CI_Model {
 			
 
 			$this->tasks[] = $task;
+		}
+	}
+	
+	private function _loadTickets() {
+		$query = $this->db->get_where( 'ticket', array( 'project_id' => $this->id ) );
+		foreach( $query->result() as $ticket) {
+				$tId = $ticket->ticket_id;
+				
+				$messages = $this->db->get_where( 'ticket_has_message', array( 'ticket_id' => $tId));
+				$ticket->messages = array();
+				foreach($messages->result() as $message) {
+						$msgObj = $this->db->get_where('message', array( 'message_id' => $message->message_id))->row();
+						$msgObj->author = $this->db->get_where('sec_user',array('user_id' => $msgObj->author_id))->row();
+						$ticket->messages[] = $msgObj;
+				}
+				$this->tickets[] = $ticket;
 		}
 	}
 
