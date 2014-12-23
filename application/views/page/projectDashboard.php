@@ -2,7 +2,7 @@
 
 	<div class="row">
 		<div class="col-md-3 task-column" id="ready-column" ondragover="allowDrop(event)" ondrop="drop(event)">
-			<p class="lead">Ready</p>
+			<p class="lead">On Deck <button class="add-btn" id="add-task-btn">+</button></p>
 			<?php foreach($project->tasks as $task) {
 				if ( $task->status == 0 ) { ?>
 					<article class="task" draggable="true" id="task-<?php echo $task->task_id; ?>">
@@ -129,7 +129,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary" id="saveModalTask">Save changes</button>
+        <button type="button" class="btn btn-primary save-btn" id="saveModalTask">Save changes</button>
       </div>
     </div>
   </div>

@@ -25,6 +25,12 @@ class Welcome extends MY_Controller {
 		die("error ".$type);
 	}
 	
+	public function logout() {
+		$this->session->set_userdata('user',null);
+		$data['title'] = 'Login';
+		$this->_loadView('login',$data);
+	}
+	
 	function login_user() {
 		//check if we got a uname
 		$uname = $this->input->post('uname');
