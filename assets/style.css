@@ -220,7 +220,6 @@ ul#taskModalMemberList li img {
 	-webkit-border-radius:5px;
 	-webkit-transition: opacity 1s;
 	transition: opacity 1s;
-<<<<<<< HEAD
 }
 
 .drawer {
@@ -275,6 +274,14 @@ ul#taskModalMemberList li img {
 	background:#eee;
 }
 
+.meeting.client-facing {
+		margin:1.5em 0;
+		border-radius:3px;
+		-o-border-radius:3px;
+		-moz-border-radius:3px;
+		-webkit-border-radius:3px;
+}
+
 .meeting>* {
 	margin:10px;
 }
@@ -313,6 +320,49 @@ ul#taskModalMemberList li img {
 .member-head .adder {
 	margin:0 10px 0 0;
 	padding:0;
-=======
->>>>>>> master
+}
+
+#agent-heads-container, #client-container {
+		width:200px;
+		padding:0.5em 1em 1em 1em;
+}
+
+.add-btn {
+		background:#393;
+		color:#FFF;
+		border:none;
+		height:30px;
+		width:30px;
+		border-radius:15px;
+		-webkit-border-radius:15px;
+		padding-top:0;
+}
+
+.ticket {
+		background:#eee;
+		padding:1em;
+		margin:1.5em 0;
+		position:relative;
+		min-height:120px;
+}
+
+.ticket-urgency {
+		position:absolute;
+		top:1.5em;
+		right:1.5em;
+}
+/* URGENCY COLOR CODES */
+.ticket-urgency.urgency-zero {color:#C1BDB9;}.ticket-urgency.urgency-one {color:#3B3B3B;}.ticket-urgency.urgency-two {color:#555;}.ticket-urgency.urgency-three {color:#F2803D;}.ticket-urgency.urgency-four {color:#BF534D;}.ticket-urgency.urgency-five {color:#AD1A29;}
+
+.ticket footer {
+		position:absolute;
+		bottom:0;
+		right:0;
+		left:0;
+		width:100%;
+}
+
+.ticket footer .messages {
+		margin:5px 0 0 1em;
+		cursor:pointer;
 }
